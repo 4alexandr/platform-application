@@ -1,0 +1,51 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% oro_title_set({params : {"%entity.summary%": entity.summary, "%entityName%": 'orocrm.issue.entity_label'|trans }}) %}
+{% set entityId = entity.id %}
+
+{% block navButtons %}
+    {% set html = UI.saveAndCloseButton() %}
+    {% set html = html ~ UI.saveAndStayButton() %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+    {{ UI.cancelButton(path('orocrm_issue_index')) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if entityId %}
+        {% set breadcrumbs = {
+            'entity': entity,
+            'indexPath': path('orocrm_issue_index'),
+            'indexLabel': 'orocrm.issue.entity_plural_label'|trans,
+            'entityTitle': entity.summary
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'orocrm.issue.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'issue-form' %}
+
+    {% set dataBlocks = [{
+        'title': 'General Information'|trans,
+        'class': 'active',
+        'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    form_row(form.code),
+                    form_row(form.summary),
+                    form_row(form.description),
+                ]
+            }
+        ]
+    }] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

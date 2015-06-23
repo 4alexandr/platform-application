@@ -1,0 +1,2 @@
+parameters:
+    orocrm_issue.entity.class:                       OroCRM\Bundle\IssueBundle\Entity\Issue

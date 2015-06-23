@@ -1,0 +1,11 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'issues-grid' %}
+{% set pageTitle = 'orocrm.issue.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {{ UI.addButton({
+        'path' : path('orocrm_issue_create'),
+        'entity_label': 'orocrm.issue.entity_label'|trans
+    }) }}
+{% endblock %}

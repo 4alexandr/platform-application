@@ -1,0 +1,60 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% oro_title_set({params : {"%entity.summary%": entity.summary|default('N/A') }}) %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('orocrm_issue_update', { id: entity.id }),
+            'entity_label': 'orocrm.issue.entity_label'|trans
+        }) }}
+    {% endif %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('orocrm_issue_delete', {'id': entity.id}),
+            'dataRedirect': path('orocrm_issue_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-user',
+            'dataId': entity.id,
+            'entity_label': 'orocrm.issue.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('orocrm_issue_index'),
+        'indexLabel': 'orocrm.issue.entity_plural_label'|trans,
+        'entityTitle': entity.summary
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {%- set issueInformation -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('orocrm.issue.code.label'|trans, entity.code) }}
+                {{ UI.renderProperty('orocrm.issue.summary.label'|trans, entity.summary) }}
+                {{ UI.renderHtmlProperty('orocrm.issue.description.label'|trans, entity.description|nl2br) }}
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {'data' : [issueInformation]}
+            ]
+        }
+    ] %}
+
+    {% set id = 'issueView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+
+    {{ parent() }}
+{% endblock content_data %}

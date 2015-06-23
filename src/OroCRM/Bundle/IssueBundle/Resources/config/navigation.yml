@@ -1,0 +1,18 @@
+oro_menu_config:
+    items:
+        issue_tab:
+            label: orocrm.issue.entity_label
+            route: orocrm_issue_index
+            extras:
+                routes: ['orocrm_issue_update', 'orocrm_issue_create', 'orocrm_issue_view']
+                position: 40
+    tree:
+       application_menu:
+           children:
+               issue_tab: ~
+
+oro_titles:
+    orocrm_issue_index: ~
+    orocrm_issue_view: '%%entity.summary%%'
+    orocrm_issue_create: oro.ui.create_entity
+    orocrm_issue_update: '%%entity.summary%% - Edit'

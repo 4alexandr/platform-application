@@ -1,0 +1,18 @@
+orocrm:
+    issue:
+        #
+        # OroCRM/Bundle/IssueBundle/Entity/Issue
+        #
+        entity_label:               Issue
+        entity_plural_label:        Issues
+
+        id.label:                   Id
+        code.label:                 Code
+        summary.label:              Summary
+        description.label:          Description
+
+        #
+        # Messages
+        #
+
+        saved_message: 				Issue saved

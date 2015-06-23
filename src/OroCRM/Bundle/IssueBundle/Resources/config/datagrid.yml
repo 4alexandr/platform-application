@@ -1,0 +1,83 @@
+datagrid:
+    issues-grid:
+        options:
+            entity_pagination: true
+
+        source:
+            type: orm
+            query:
+                select:
+                    - issue
+                from:
+                    - { table: %orocrm_issue.entity.class%, alias: issue }
+        columns:
+            code:
+                label: orocrm.issue.code.label
+            summary:
+                label: orocrm.issue.summary.label
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                code:
+                    data_name: issue.code
+                summary:
+                    data_name: issue.summary
+                createdAt:
+                    data_name: issue.createdAt
+                updatedAt:
+                    data_name: issue.updatedAt
+            default:
+                updatedAt: DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: issue.code
+                summary:
+                    type:      string
+                    data_name: issue.summary
+                createdAt:
+                    type:      datetime
+                    data_name: issue.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: issue.updatedAt
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      orocrm_issue_view
+                params:
+                    - id
+            update_link:
+                type:       url
+                route:      orocrm_issue_update
+                params:
+                    - id
+            delete_link:
+                type:       url
+                route:      orocrm_issue_delete
+                params:
+                    - id
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                icon:          eye-open
+                link:          view_link
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         oro.grid.action.update
+                icon:          edit
+                link:          update_link
+            delete:
+                type:          delete
+                label:         oro.grid.action.delete
+                icon:          trash
+                link:          delete_link
