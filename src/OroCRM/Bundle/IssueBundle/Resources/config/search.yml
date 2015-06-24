@@ -1,0 +1,14 @@
+OroCRM\Bundle\IssueBundle\Entity\Issue:
+    alias:                          orocrm_issue
+    route:
+        name:                       orocrm_issue_view
+        parameters:
+            id:                     id
+    search_template:                OroCRMIssueBundle:Search:result.html.twig
+    fields:
+        -
+            name:                   code
+            target_type:            text
+        -
+            name:                   summary
+            target_type:            text

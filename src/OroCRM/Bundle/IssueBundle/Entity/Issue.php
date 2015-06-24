@@ -221,4 +221,9 @@ class Issue extends ExtendIssue
     {
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
+
+    public function __toString()
+    {
+        return $this->getCode().': '.$this->getSummary();
+    }
 }
