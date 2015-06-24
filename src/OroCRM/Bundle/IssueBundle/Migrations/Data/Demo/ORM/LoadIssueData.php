@@ -45,6 +45,18 @@ class LoadIssueData implements FixtureInterface
 
     protected function persistDemoIssues(ObjectManager $manager)
     {
+        $owner = $manager
+            ->getRepository('OroUserBundle:User')
+            ->findOneBy(
+                array(
+                    'username' => 'admin',
+                )
+            );
+
+        if (!$owner) {
+            return;
+        }
+
         for ($i = 0; $i < self::FIXTURES_COUNT; ++$i) {
             if ($manager->getRepository('OroCRMIssueBundle:Issue')->findOneBySummary(self::$fixtureSummary[$i])) {
                 // Issue with this summary is already exist
@@ -55,6 +67,9 @@ class LoadIssueData implements FixtureInterface
             $issue->setCode('ISS-'.($i + 1));
             $issue->setSummary(self::$fixtureSummary[$i]);
             $issue->setDescription(str_repeat(self::$fixtureSummary[$i], 3));
+
+            $issue->setOwner($owner);
+            $issue->setReporter($owner);
 
             $manager->persist($issue);
         }

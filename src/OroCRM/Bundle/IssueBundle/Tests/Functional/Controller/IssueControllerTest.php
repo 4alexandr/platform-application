@@ -24,6 +24,8 @@ class IssueControllerTest extends WebTestCase
         $form['orocrm_issue[code]'] = 'ISS-1';
         $form['orocrm_issue[summary]'] = 'New issue';
         $form['orocrm_issue[description]'] = 'New description';
+        $form['orocrm_issue[owner]'] = '1';
+        $form['orocrm_issue[reporter]'] = '1';
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

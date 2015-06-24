@@ -10,6 +10,8 @@ orocrm:
         code.label:                 Code
         summary.label:              Summary
         description.label:          Description
+        owner.label:                Assigned To
+        reporter.label:             Reporter
 
         #
         # Messages

@@ -39,6 +39,19 @@
                 {{ UI.renderProperty('orocrm.issue.code.label'|trans, entity.code) }}
                 {{ UI.renderProperty('orocrm.issue.summary.label'|trans, entity.summary) }}
                 {{ UI.renderHtmlProperty('orocrm.issue.description.label'|trans, entity.description|nl2br) }}
+
+                {%- set reporterData -%}
+                {%- if entity.reporter -%}
+                    {% if resource_granted('oro_user_user_view') %}
+                        <a href="{{ path('oro_user_view', {'id': entity.reporter.id}) }}">
+                            {{ entity.reporter|oro_format_name|escape }}
+                        </a>
+                    {% else %}
+                        {{ entity.reporter|oro_format_name|escape }}
+                    {% endif %}
+                {%- endif -%}
+                {%- endset -%}
+                {{ UI.renderHtmlProperty('orocrm.issue.reporter.label'|trans, reporterData) }}
             </div>
         </div>
     {%- endset -%}

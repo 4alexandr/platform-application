@@ -9,6 +9,32 @@ OroCRM\Bundle\IssueBundle\Entity\Issue:
         -
             name:                   code
             target_type:            text
+            target_fields:          [code]
         -
             name:                   summary
             target_type:            text
+            target_fields:          [summary]
+        -
+            name: owner
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name:                   first_name
+                    target_type:            text
+                    target_fields:          [owner_first_name]
+                -
+                    name:                   last_name
+                    target_type:            text
+                    target_fields:          [owner_last_name]
+        -
+            name: reporter
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name:                   first_name
+                    target_type:            text
+                    target_fields:          [reporter_first_name]
+                -
+                    name:                   last_name
+                    target_type:            text
+                    target_fields:          [reporter_last_name]

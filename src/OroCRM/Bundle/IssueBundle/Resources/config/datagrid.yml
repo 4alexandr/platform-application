@@ -8,13 +8,31 @@ datagrid:
             query:
                 select:
                     - issue
+                    - CONCAT(owner.firstName, CONCAT(' ', owner.lastName)) as ownerName
+                    - owner.id as ownerId
+                    - CONCAT(reporter.firstName, CONCAT(' ', reporter.lastName)) as reporterName
+                    - reporter.id as reporterId
                 from:
                     - { table: %orocrm_issue.entity.class%, alias: issue }
+                join:
+                    left:
+                        - { join: issue.owner, alias: owner }
+                        - { join: issue.reporter, alias: reporter }
         columns:
             code:
                 label: orocrm.issue.code.label
             summary:
                 label: orocrm.issue.summary.label
+            reporterName:
+                type:          twig
+                label:         orocrm.issue.reporter.label
+                frontend_type: html
+                template:      OroCRMIssueBundle:Datagrid:Columns/owner.html.twig
+            ownerName:
+                type:          twig
+                label:         orocrm.issue.owner.label
+                frontend_type: html
+                template:      OroCRMIssueBundle:Datagrid:Columns/owner.html.twig
             createdAt:
                 label: oro.ui.created_at
                 frontend_type: datetime
@@ -27,6 +45,10 @@ datagrid:
                     data_name: issue.code
                 summary:
                     data_name: issue.summary
+                ownerName:
+                    data_name: ownerName
+                reporterName:
+                    data_name: reporterName
                 createdAt:
                     data_name: issue.createdAt
                 updatedAt:
@@ -41,6 +63,12 @@ datagrid:
                 summary:
                     type:      string
                     data_name: issue.summary
+                ownerName:
+                    type:      string
+                    data_name: ownerName
+                reporterName:
+                    type:      string
+                    data_name: reporterName
                 createdAt:
                     type:      datetime
                     data_name: issue.createdAt

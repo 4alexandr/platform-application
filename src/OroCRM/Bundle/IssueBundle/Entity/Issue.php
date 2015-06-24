@@ -13,7 +13,15 @@ use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
  * @ORM\Table("orocrm_issue")
  * @ORM\Entity(repositoryClass="OroCRM\Bundle\IssueBundle\Entity\Repository\IssueRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Config()
+ * @Config(
+ *  defaultValues={
+ *      "ownership"={
+ *          "owner_type"="USER",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="owner_id"
+ *      }
+ *  }
+ * )
  */
 class Issue extends ExtendIssue
 {
@@ -74,6 +82,22 @@ class Issue extends ExtendIssue
      * )
      */
     private $updatedAt;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $reporter;
 
     /**
      * Get id.
@@ -225,5 +249,49 @@ class Issue extends ExtendIssue
     public function __toString()
     {
         return $this->getCode().': '.$this->getSummary();
+    }
+
+    /**
+     * Get owner.
+     *
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * Set owner.
+     *
+     * @param User $owner
+     *
+     * @return Issue
+     */
+    public function setOwner($owner = null)
+    {
+        $this->owner = $owner;
+    }
+
+    /**
+     * Get reporter.
+     *
+     * @return User
+     */
+    public function getReporter()
+    {
+        return $this->reporter;
+    }
+
+    /**
+     * Set reporter.
+     *
+     * @param User $reporter
+     *
+     * @return Issue
+     */
+    public function setReporter($reporter = null)
+    {
+        $this->reporter = $reporter;
     }
 }
