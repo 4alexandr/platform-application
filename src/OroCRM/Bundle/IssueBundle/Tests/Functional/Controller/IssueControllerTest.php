@@ -9,7 +9,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  * @dbIsolation
  * @dbReindex
  */
-class IssueControllersTest extends WebTestCase
+class IssueControllerTest extends WebTestCase
 {
     protected function setUp()
     {
@@ -30,7 +30,7 @@ class IssueControllersTest extends WebTestCase
         $result = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains("Issue saved", $crawler->html());
+        $this->assertContains('Issue saved', $crawler->html());
     }
 
     /**
@@ -60,7 +60,7 @@ class IssueControllersTest extends WebTestCase
         $result = $this->client->getResponse();
 
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains("Issue saved", $crawler->html());
+        $this->assertContains('Issue saved', $crawler->html());
     }
 
     /**

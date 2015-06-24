@@ -18,8 +18,8 @@ class IssueTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new Issue();
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        call_user_func_array(array($obj, 'set'.ucfirst($property)), array($value));
+        $this->assertEquals($value, call_user_func_array(array($obj, 'get'.ucfirst($property)), array()));
     }
 
     public function settersAndGettersDataProvider()
