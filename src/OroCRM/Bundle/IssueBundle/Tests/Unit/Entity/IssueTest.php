@@ -3,6 +3,7 @@
 namespace OroCRM\Bundle\IssueBundle\Tests\Unit\Entity;
 
 use OroCRM\Bundle\IssueBundle\Entity\Issue;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class IssueTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,5 +54,18 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
         $obj->preUpdate();
         $this->assertInstanceOf('\DateTime', $obj->getUpdatedAt());
+    }
+
+    public function testCollaborators()
+    {
+        $obj = new Issue();
+        $owner = new User();
+        $reporter = new User();
+
+        $this->assertEquals(0, $obj->getCollaborators()->count());
+
+        $obj->setOwner($owner);
+        $obj->setReporter($reporter);
+        $this->assertEquals(2, $obj->getCollaborators()->count());
     }
 }

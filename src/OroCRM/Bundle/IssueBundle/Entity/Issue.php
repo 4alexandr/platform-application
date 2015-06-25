@@ -3,9 +3,11 @@
 namespace OroCRM\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Issue.
@@ -98,6 +100,21 @@ class Issue extends ExtendIssue
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $reporter;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinTable(name="orocrm_issue_to_collaborator")
+     */
+    protected $collaborators;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->collaborators = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -270,6 +287,9 @@ class Issue extends ExtendIssue
      */
     public function setOwner($owner = null)
     {
+        if ($owner) {
+            $this->addCollaborator($owner);
+        }
         $this->owner = $owner;
     }
 
@@ -292,6 +312,45 @@ class Issue extends ExtendIssue
      */
     public function setReporter($reporter = null)
     {
+        if ($reporter) {
+            $this->addCollaborator($reporter);
+        }
         $this->reporter = $reporter;
+    }
+
+    /**
+     * Add collaborator.
+     *
+     * @param User
+     *
+     * @return Issue
+     */
+    public function addCollaborator(User $collaborator)
+    {
+        if (!$this->getCollaborators()->contains($collaborator)) {
+            $this->collaborators[] = $collaborator;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove collaborator.
+     *
+     * @param User $collaborators
+     */
+    public function removeCollaborator(User $collaborator)
+    {
+        $this->collaborators->removeElement($collaborators);
+    }
+
+    /**
+     * Get collaborators.
+     *
+     * @return Collection
+     */
+    public function getCollaborators()
+    {
+        return $this->collaborators;
     }
 }

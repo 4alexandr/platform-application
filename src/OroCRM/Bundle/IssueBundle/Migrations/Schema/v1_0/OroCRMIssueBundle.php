@@ -15,9 +15,11 @@ class OroCRMIssueBundle implements Migration
     {
         /* Tables generation **/
         $this->createOrocrmIssueTable($schema);
+        $this->createOrocrmIssueToCollaboratorTable($schema);
 
         /* Foreign keys generation **/
         $this->addOrocrmIssueForeignKeys($schema);
+        $this->addOrocrmIssueToCollaboratorForeignKeys($schema);
     }
 
     /**
@@ -46,6 +48,24 @@ class OroCRMIssueBundle implements Migration
     }
 
     /**
+     * Create orocrm_issue_to_collaborator table.
+     *
+     * @param Schema $schema
+     */
+    protected function createOrocrmIssueToCollaboratorTable(Schema $schema)
+    {
+        $table = $schema->createTable('orocrm_issue_to_collaborator');
+
+        $table->addColumn('issue_id', 'integer', []);
+        $table->addColumn('user_id', 'integer', []);
+
+        $table->setPrimaryKey(['issue_id', 'user_id']);
+
+        $table->addIndex(['issue_id'], 'IDX_7480BCE5E7AA5', []);
+        $table->addIndex(['user_id'], 'IDX_7480BCEA76ED395', []);
+    }
+
+    /**
      * @param Schema $schema
      */
     protected function addOrocrmIssueForeignKeys(Schema $schema)
@@ -63,6 +83,28 @@ class OroCRMIssueBundle implements Migration
             ['reporter_id'],
             ['id'],
             ['onDelete' => 'SET NULL']
+        );
+    }
+
+    /**
+     * Add orocrm_issue_to_collaborator foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addOrocrmIssueToCollaboratorForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('orocrm_issue_to_collaborator');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue'),
+            ['issue_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['user_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 }

@@ -12,6 +12,7 @@ orocrm:
         description.label:          Description
         owner.label:                Assigned To
         reporter.label:             Reporter
+        collaborators.label:        Collaborators
 
         #
         # Messages
