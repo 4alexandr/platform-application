@@ -40,6 +40,7 @@
                 {{ UI.renderProperty('orocrm.issue.summary.label'|trans, entity.summary) }}
                 {{ UI.renderHtmlProperty('orocrm.issue.description.label'|trans, entity.description|nl2br) }}
                 {{ UI.renderProperty('orocrm.issue.priority.label'|trans, entity.priority) }}
+                {{ UI.renderProperty('orocrm.issue.resolution.label'|trans, entity.resolution) }}
 
                 {%- set reporterData -%}
                 {%- if entity.reporter -%}

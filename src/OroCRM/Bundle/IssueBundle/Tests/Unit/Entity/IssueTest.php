@@ -5,6 +5,7 @@ namespace OroCRM\Bundle\IssueBundle\Tests\Unit\Entity;
 use OroCRM\Bundle\IssueBundle\Entity\Issue;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\IssueBundle\Entity\Priority;
+use OroCRM\Bundle\IssueBundle\Entity\Resolution;
 
 class IssueTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,6 +32,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             array('summary', 'Test summary'),
             array('description', 'Test Description'),
             array('priority', new Priority()),
+            array('resolution', new Resolution()),
             array('createdAt', new \DateTime()),
             array('updatedAt', new \DateTime()),
         );

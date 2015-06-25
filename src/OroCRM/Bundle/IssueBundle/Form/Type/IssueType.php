@@ -71,6 +71,16 @@ class IssueType extends AbstractType
                 },
             ]
         );
+
+        $builder->add(
+            'resolution',
+            'translatable_entity',
+            [
+                'label' => 'orocrm.issue.resolution.label',
+                'class' => 'OroCRM\Bundle\IssueBundle\Entity\Resolution',
+                'required' => true,
+            ]
+        );
     }
 
     /**

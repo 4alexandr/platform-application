@@ -14,6 +14,7 @@ orocrm:
         reporter.label:             Reporter
         collaborators.label:        Collaborators
         priority.label:             Priority
+        resolution.label:           Resolution
 
         #
         # Messages

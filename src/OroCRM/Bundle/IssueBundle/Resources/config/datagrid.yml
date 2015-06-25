@@ -26,6 +26,8 @@ datagrid:
                 label: orocrm.issue.summary.label
             priority:
                 label: orocrm.issue.priority.label
+            resolution:
+                label: orocrm.issue.resolution.label
             reporterName:
                 type:          twig
                 label:         orocrm.issue.reporter.label
@@ -50,6 +52,8 @@ datagrid:
                     data_name: issue.summary
                 priority:
                     data_name: priority.order
+                resolution:
+                    data_name: issue.resolution
                 ownerName:
                     data_name: ownerName
                 reporterName:
@@ -68,6 +72,12 @@ datagrid:
                 summary:
                     type:      string
                     data_name: issue.summary
+                priority:
+                    type:      string
+                    data_name: issue.priority
+                resolution:
+                    type:      string
+                    data_name: issue.resolution
                 ownerName:
                     type:      string
                     data_name: ownerName

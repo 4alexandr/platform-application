@@ -23,6 +23,14 @@ OroCRM\Bundle\IssueBundle\Entity\Issue:
                     target_type:            text
                     target_fields:          [priority]
         -
+            name: resolution
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name:                   label
+                    target_type:            text
+                    target_fields:          [resolution]
+        -
             name: owner
             relation_type: many-to-one
             relation_fields:

@@ -117,6 +117,14 @@ class Issue extends ExtendIssue
      */
     protected $priority;
 
+    /**
+     * @var resolution
+     *
+     * @ORM\ManyToOne(targetEntity="Resolution")
+     * @ORM\JoinColumn(name="resolution_name", referencedColumnName="name", onDelete="SET NULL")
+     */
+    protected $resolution;
+
     public function __construct()
     {
         parent::__construct();
@@ -389,6 +397,26 @@ class Issue extends ExtendIssue
     public function setPriority($priority)
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return Resolution
+     */
+    public function getResolution()
+    {
+        return $this->resolution;
+    }
+
+    /**
+     * @param Resolution $resolution
+     *
+     * @return Issue
+     */
+    public function setResolution($resolution)
+    {
+        $this->resolution = $resolution;
 
         return $this;
     }
