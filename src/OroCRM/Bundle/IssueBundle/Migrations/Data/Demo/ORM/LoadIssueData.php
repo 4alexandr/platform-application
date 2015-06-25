@@ -36,6 +36,9 @@ class LoadIssueData implements FixtureInterface
         'Sed ullamcorper ipsum id ipsum laoreet vulputate.',
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function load(ObjectManager $manager)
     {
         $this->persistDemoIssues($manager);
@@ -43,17 +46,18 @@ class LoadIssueData implements FixtureInterface
         $manager->flush();
     }
 
+    /**
+     * @param ObjectManager $manager
+     */
     protected function persistDemoIssues(ObjectManager $manager)
     {
-        $owner = $manager
-            ->getRepository('OroUserBundle:User')
-            ->findOneBy(
-                array(
-                    'username' => 'admin',
-                )
-            );
+        $owners = $manager->getRepository('OroUserBundle:User')->findAll();
+        if (empty($owners)) {
+            return;
+        }
 
-        if (!$owner) {
+        $priorities = $manager->getRepository('OroCRMIssueBundle:Priority')->findAll();
+        if (empty($priorities)) {
             return;
         }
 
@@ -68,10 +72,25 @@ class LoadIssueData implements FixtureInterface
             $issue->setSummary(self::$fixtureSummary[$i]);
             $issue->setDescription(str_repeat(self::$fixtureSummary[$i], 3));
 
-            $issue->setOwner($owner);
-            $issue->setReporter($owner);
+            $issue->setPriority($this->getRandomEntity($priorities));
+            $issue->setOwner($this->getRandomEntity($owners));
+            $issue->setReporter($this->getRandomEntity($owners));
 
             $manager->persist($issue);
         }
+    }
+
+    /**
+     * @param array $entities
+     *
+     * @return object|null
+     */
+    protected function getRandomEntity($entities)
+    {
+        if (empty($entities)) {
+            return;
+        }
+
+        return $entities[rand(0, count($entities) - 1)];
     }
 }

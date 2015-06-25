@@ -15,6 +15,14 @@ OroCRM\Bundle\IssueBundle\Entity\Issue:
             target_type:            text
             target_fields:          [summary]
         -
+            name: priority
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name:                   label
+                    target_type:            text
+                    target_fields:          [priority]
+        -
             name: owner
             relation_type: many-to-one
             relation_fields:

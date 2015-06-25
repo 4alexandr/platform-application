@@ -16,6 +16,7 @@ datagrid:
                     - { table: %orocrm_issue.entity.class%, alias: issue }
                 join:
                     left:
+                        - { join: issue.priority, alias: priority }
                         - { join: issue.owner, alias: owner }
                         - { join: issue.reporter, alias: reporter }
         columns:
@@ -23,6 +24,8 @@ datagrid:
                 label: orocrm.issue.code.label
             summary:
                 label: orocrm.issue.summary.label
+            priority:
+                label: orocrm.issue.priority.label
             reporterName:
                 type:          twig
                 label:         orocrm.issue.reporter.label
@@ -45,6 +48,8 @@ datagrid:
                     data_name: issue.code
                 summary:
                     data_name: issue.summary
+                priority:
+                    data_name: priority.order
                 ownerName:
                     data_name: ownerName
                 reporterName:

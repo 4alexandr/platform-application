@@ -109,11 +109,27 @@ class Issue extends ExtendIssue
      */
     protected $collaborators;
 
+    /**
+     * @var priority
+     *
+     * @ORM\ManyToOne(targetEntity="Priority")
+     * @ORM\JoinColumn(name="priority_name", referencedColumnName="name", onDelete="SET NULL")
+     */
+    protected $priority;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->collaborators = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getCode().': '.$this->getSummary();
     }
 
     /**
@@ -263,11 +279,6 @@ class Issue extends ExtendIssue
         $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
-    public function __toString()
-    {
-        return $this->getCode().': '.$this->getSummary();
-    }
-
     /**
      * Get owner.
      *
@@ -291,6 +302,8 @@ class Issue extends ExtendIssue
             $this->addCollaborator($owner);
         }
         $this->owner = $owner;
+
+        return $this;
     }
 
     /**
@@ -316,6 +329,8 @@ class Issue extends ExtendIssue
             $this->addCollaborator($reporter);
         }
         $this->reporter = $reporter;
+
+        return $this;
     }
 
     /**
@@ -338,10 +353,14 @@ class Issue extends ExtendIssue
      * Remove collaborator.
      *
      * @param User $collaborators
+     *
+     * @return Issue
      */
     public function removeCollaborator(User $collaborator)
     {
         $this->collaborators->removeElement($collaborators);
+
+        return $this;
     }
 
     /**
@@ -352,5 +371,25 @@ class Issue extends ExtendIssue
     public function getCollaborators()
     {
         return $this->collaborators;
+    }
+
+    /**
+     * @return Priority
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param Priority $priority
+     *
+     * @return Issue
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
     }
 }

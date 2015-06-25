@@ -2,6 +2,7 @@
 
 namespace OroCRM\Bundle\IssueBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -55,6 +56,19 @@ class IssueType extends AbstractType
                     'permission' => 'ASSIGN',
                     'entity_id' => 0,
                 ],
+            ]
+        );
+
+        $builder->add(
+            'priority',
+            'translatable_entity',
+            [
+                'label' => 'orocrm.issue.priority.label',
+                'class' => 'OroCRM\Bundle\IssueBundle\Entity\Priority',
+                'required' => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('priority')->orderBy('priority.order');
+                },
             ]
         );
     }

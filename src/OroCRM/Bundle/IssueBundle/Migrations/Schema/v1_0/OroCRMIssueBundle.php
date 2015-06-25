@@ -16,6 +16,7 @@ class OroCRMIssueBundle implements Migration
         /* Tables generation **/
         $this->createOrocrmIssueTable($schema);
         $this->createOrocrmIssueToCollaboratorTable($schema);
+        $this->createOrocrmPriorityTable($schema);
 
         /* Foreign keys generation **/
         $this->addOrocrmIssueForeignKeys($schema);
@@ -40,11 +41,13 @@ class OroCRMIssueBundle implements Migration
 
         $table->addColumn('owner_id', 'integer', ['notnull' => false]);
         $table->addColumn('reporter_id', 'integer', ['notnull' => false]);
+        $table->addColumn('priority_name', 'string', ['notnull' => false, 'length' => 32]);
 
         $table->setPrimaryKey(['id']);
 
         $table->addIndex(['owner_id'], 'IDX_EF1CE9717E3C61F9', []);
         $table->addIndex(['reporter_id'], 'IDX_EF1CE971E1CFE6F5', []);
+        $table->addIndex(['priority_name'], 'IDX_EF1CE971965BD3DF', []);
     }
 
     /**
@@ -68,10 +71,32 @@ class OroCRMIssueBundle implements Migration
     /**
      * @param Schema $schema
      */
+    protected function createOrocrmPriorityTable(Schema $schema)
+    {
+        $table = $schema->createTable('orocrm_issue_priority');
+
+        $table->addColumn('name', 'string', ['notnull' => true, 'length' => 32]);
+        $table->addColumn('label', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('`order`', 'integer', ['notnull' => true]);
+
+        $table->setPrimaryKey(['name']);
+
+        $table->addUniqueIndex(['label'], 'UNIQ_704D2F76EA750E8');
+    }
+
+    /**
+     * @param Schema $schema
+     */
     protected function addOrocrmIssueForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('orocrm_issue');
 
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue_priority'),
+            ['priority_name'],
+            ['name'],
+            ['onDelete' => 'SET NULL']
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['owner_id'],
