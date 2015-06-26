@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
 use Oro\Bundle\UserBundle\Entity\User;
+use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
+use Oro\Bundle\FormBundle\Entity\EmptyItem;
 
 /**
  * Issue.
@@ -25,7 +26,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *  }
  * )
  */
-class Issue extends ExtendIssue
+class Issue extends ExtendIssue implements EmptyItem
 {
     /**
      * @var int
@@ -125,11 +126,20 @@ class Issue extends ExtendIssue
      */
     protected $resolution;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Issue")
+     * @ORM\JoinTable(name="orocrm_issue_to_related_issue")
+     */
+    protected $related_issues;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->collaborators = new ArrayCollection();
+        $this->related_issues = new ArrayCollection();
     }
 
     /**
@@ -138,6 +148,16 @@ class Issue extends ExtendIssue
     public function __toString()
     {
         return $this->getCode().': '.$this->getSummary();
+    }
+
+    /**
+     * Check if entity is empty.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->id);
     }
 
     /**
@@ -419,5 +439,45 @@ class Issue extends ExtendIssue
         $this->resolution = $resolution;
 
         return $this;
+    }
+
+    /**
+     * Add related_issue.
+     *
+     * @param Issue $relatedIssue
+     *
+     * @return Issue
+     */
+    public function addRelatedIssue($relatedIssue)
+    {
+        if ($relatedIssue instanceof self && !$this->related_issues->contains($relatedIssue)) {
+            $this->related_issues[] = $relatedIssue;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove related_issue.
+     *
+     * @param Issue $relatedIssue
+     *
+     * @return Issue
+     */
+    public function removeRelatedIssue(Issue $relatedIssue)
+    {
+        $this->related_issues->removeElement($relatedIssue);
+
+        return $this;
+    }
+
+    /**
+     * Get related_issues.
+     *
+     * @return Collection
+     */
+    public function getRelatedIssues()
+    {
+        return $this->related_issues;
     }
 }

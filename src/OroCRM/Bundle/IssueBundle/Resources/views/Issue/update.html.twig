@@ -37,11 +37,12 @@
                 'data': [
                     form_row(form.code),
                     form_row(form.summary),
+                    form_row(form.description),
                     form_row(form.priority),
                     form_row(form.resolution),
                     form.owner is defined ? form_row(form.owner) : '',
                     form.reporter is defined ? form_row(form.reporter) : '',
-                    form_row(form.description),
+                    form_row(form.related_issues),
                 ]
             }
         ]

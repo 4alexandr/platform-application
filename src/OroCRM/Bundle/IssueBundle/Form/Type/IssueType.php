@@ -78,7 +78,22 @@ class IssueType extends AbstractType
             [
                 'label' => 'orocrm.issue.resolution.label',
                 'class' => 'OroCRM\Bundle\IssueBundle\Entity\Resolution',
-                'required' => true,
+                'required' => false,
+            ]
+        );
+
+        $builder->add(
+            'related_issues',
+            'oro_collection',
+            [
+                'handle_primary' => false,
+                'label' => 'orocrm.issue.related_issues.label',
+                'type' => 'entity',
+                'options' => [
+                    'class' => 'OroCRM\Bundle\IssueBundle\Entity\Issue',
+                    'empty_value' => '',
+                ],
+                'required' => false,
             ]
         );
     }

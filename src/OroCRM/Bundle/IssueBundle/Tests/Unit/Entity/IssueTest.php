@@ -72,4 +72,19 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $obj->setReporter($reporter);
         $this->assertEquals(2, $obj->getCollaborators()->count());
     }
+
+    public function testRelatedIssues()
+    {
+        $obj = new Issue();
+        $related1 = new Issue();
+        $related2 = new Issue();
+
+        $this->assertEquals(0, $obj->getRelatedIssues()->count());
+
+        $obj->addRelatedIssue($related1);
+        $obj->addRelatedIssue($related2);
+        $obj->addRelatedIssue($related1);
+
+        $this->assertEquals(2, $obj->getRelatedIssues()->count());
+    }
 }

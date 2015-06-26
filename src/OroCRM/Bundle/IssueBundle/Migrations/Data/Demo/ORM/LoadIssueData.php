@@ -66,6 +66,8 @@ class LoadIssueData implements FixtureInterface
             return;
         }
 
+        $issues = array();
+
         for ($i = 0; $i < self::FIXTURES_COUNT; ++$i) {
             if ($manager->getRepository('OroCRMIssueBundle:Issue')->findOneBySummary(self::$fixtureSummary[$i])) {
                 // Issue with this summary is already exist
@@ -82,7 +84,12 @@ class LoadIssueData implements FixtureInterface
             $issue->setOwner($this->getRandomEntity($owners));
             $issue->setReporter($this->getRandomEntity($owners));
 
+            if (!empty($issues)) {
+                $issue->addRelatedIssue($this->getRandomEntity($issues));
+            }
+
             $manager->persist($issue);
+            $issues[] = $issue;
         }
     }
 

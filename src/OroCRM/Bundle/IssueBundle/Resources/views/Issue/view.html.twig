@@ -68,6 +68,14 @@
                 {%- endfor -%}
                 {%- endset -%}
                 {{ UI.renderHtmlProperty('orocrm.issue.collaborators.label'|trans, collaboratorsData|raw) }}
+
+                {%- set relatedIssuesData -%}
+                {% for relatedIssue in entity.relatedIssues %}
+                    <a href="{{ path('orocrm_issue_view', {'id': relatedIssue.id}) }}">{{ relatedIssue }}</a>
+                    {% if not loop.last %}<br/>{% endif %}
+                {%- endfor -%}
+                {%- endset -%}
+                {{ UI.renderHtmlProperty('orocrm.issue.related_issues.label'|trans, relatedIssuesData|raw) }}
             </div>
         </div>
     {%- endset -%}

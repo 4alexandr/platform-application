@@ -16,12 +16,14 @@ class OroCRMIssueBundle implements Migration
         /* Tables generation **/
         $this->createOrocrmIssueTable($schema);
         $this->createOrocrmIssueToCollaboratorTable($schema);
+        $this->createOrocrmIssueToRelatedIssueTable($schema);
         $this->createOrocrmPriorityTable($schema);
         $this->createOrocrmResolutionTable($schema);
 
         /* Foreign keys generation **/
         $this->addOrocrmIssueForeignKeys($schema);
         $this->addOrocrmIssueToCollaboratorForeignKeys($schema);
+        $this->addOrocrmIssueToRelatedIssueForeignKeys($schema);
     }
 
     /**
@@ -69,6 +71,24 @@ class OroCRMIssueBundle implements Migration
 
         $table->addIndex(['issue_id'], 'IDX_7480BCE5E7AA5', []);
         $table->addIndex(['user_id'], 'IDX_7480BCEA76ED395', []);
+    }
+
+    /**
+     * Create orocrm_issue_to_related_issue table.
+     *
+     * @param Schema $schema
+     */
+    protected function createOrocrmIssueToRelatedIssueTable(Schema $schema)
+    {
+        $table = $schema->createTable('orocrm_issue_to_related_issue');
+
+        $table->addColumn('issue_source', 'integer', []);
+        $table->addColumn('issue_target', 'integer', []);
+
+        $table->setPrimaryKey(['issue_source', 'issue_target']);
+
+        $table->addIndex(['issue_source'], 'IDX_472432F6AD7AF554', []);
+        $table->addIndex(['issue_target'], 'IDX_472432F6B49FA5DB', []);
     }
 
     /**
@@ -143,6 +163,7 @@ class OroCRMIssueBundle implements Migration
     protected function addOrocrmIssueToCollaboratorForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('orocrm_issue_to_collaborator');
+
         $table->addForeignKeyConstraint(
             $schema->getTable('orocrm_issue'),
             ['issue_id'],
@@ -152,6 +173,29 @@ class OroCRMIssueBundle implements Migration
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['user_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * Add orocrm_issue_to_related_issue foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addOrocrmIssueToRelatedIssueForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('orocrm_issue_to_related_issue');
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue'),
+            ['issue_source'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue'),
+            ['issue_target'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

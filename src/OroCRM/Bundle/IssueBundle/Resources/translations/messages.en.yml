@@ -15,6 +15,7 @@ orocrm:
         collaborators.label:        Collaborators
         priority.label:             Priority
         resolution.label:           Resolution
+        related_issues.label:       Related Issues
 
         #
         # Messages
