@@ -134,6 +134,14 @@ class Issue extends ExtendIssue implements EmptyItem
      */
     protected $related_issues;
 
+    /**
+     * @var type
+     *
+     * @ORM\ManyToOne(targetEntity="Type")
+     * @ORM\JoinColumn(name="type_name", referencedColumnName="name", onDelete="SET NULL")
+     */
+    protected $type;
+
     public function __construct()
     {
         parent::__construct();
@@ -479,5 +487,25 @@ class Issue extends ExtendIssue implements EmptyItem
     public function getRelatedIssues()
     {
         return $this->related_issues;
+    }
+
+    /**
+     * @return Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param Type $type
+     *
+     * @return Issue
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
     }
 }

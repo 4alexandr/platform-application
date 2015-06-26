@@ -44,6 +44,16 @@ class IssueController extends Controller
     {
         $issue = new Issue();
 
+        $defaultPriority = $this->getRepository('OroCRMIssueBundle:Priority')->find('major');
+        if ($defaultPriority) {
+            $issue->setPriority($defaultPriority);
+        }
+
+        $defaultType = $this->getRepository('OroCRMIssueBundle:Type')->find('bug');
+        if ($defaultType) {
+            $issue->setType($defaultType);
+        }
+
         $formAction = $this->get('router')->generate('orocrm_issue_create');
 
         return $this->update($issue, $formAction);
@@ -103,5 +113,15 @@ class IssueController extends Controller
             'form' => $this->get('orocrm_issue.form.handler.issue')->getForm()->createView(),
             'formAction' => $formAction,
         );
+    }
+
+    /**
+     * @param string $entityName
+     *
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    protected function getRepository($entityName)
+    {
+        return $this->getDoctrine()->getRepository($entityName);
     }
 }

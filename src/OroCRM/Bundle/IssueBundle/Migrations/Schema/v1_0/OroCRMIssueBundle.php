@@ -19,6 +19,7 @@ class OroCRMIssueBundle implements Migration
         $this->createOrocrmIssueToRelatedIssueTable($schema);
         $this->createOrocrmPriorityTable($schema);
         $this->createOrocrmResolutionTable($schema);
+        $this->createOrocrmTypeTable($schema);
 
         /* Foreign keys generation **/
         $this->addOrocrmIssueForeignKeys($schema);
@@ -46,6 +47,7 @@ class OroCRMIssueBundle implements Migration
         $table->addColumn('reporter_id', 'integer', ['notnull' => false]);
         $table->addColumn('priority_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('resolution_name', 'string', ['notnull' => false, 'length' => 32]);
+        $table->addColumn('type_name', 'string', ['notnull' => false, 'length' => 32]);
 
         $table->setPrimaryKey(['id']);
 
@@ -53,6 +55,7 @@ class OroCRMIssueBundle implements Migration
         $table->addIndex(['reporter_id'], 'IDX_EF1CE971E1CFE6F5', []);
         $table->addIndex(['priority_name'], 'IDX_EF1CE971965BD3DF', []);
         $table->addIndex(['resolution_name'], 'IDX_EF1CE9718EEEA2E1', []);
+        $table->addIndex(['type_name'], 'IDX_EF1CE971892CBB0E', []);
     }
 
     /**
@@ -125,6 +128,21 @@ class OroCRMIssueBundle implements Migration
     /**
      * @param Schema $schema
      */
+    protected function createOrocrmTypeTable(Schema $schema)
+    {
+        $table = $schema->createTable('orocrm_issue_type');
+
+        $table->addColumn('name', 'string', ['notnull' => true, 'length' => 32]);
+        $table->addColumn('label', 'string', ['notnull' => true, 'length' => 255]);
+
+        $table->setPrimaryKey(['name']);
+
+        $table->addUniqueIndex(['label'], 'UNIQ_72E455C8EA750E8');
+    }
+
+    /**
+     * @param Schema $schema
+     */
     protected function addOrocrmIssueForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('orocrm_issue');
@@ -138,6 +156,12 @@ class OroCRMIssueBundle implements Migration
         $table->addForeignKeyConstraint(
             $schema->getTable('orocrm_issue_resolution'),
             ['resolution_name'],
+            ['name'],
+            ['onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue_type'),
+            ['type_name'],
             ['name'],
             ['onDelete' => 'SET NULL']
         );

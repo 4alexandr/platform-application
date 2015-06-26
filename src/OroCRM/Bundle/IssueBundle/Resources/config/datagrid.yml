@@ -24,6 +24,8 @@ datagrid:
                 label: orocrm.issue.code.label
             summary:
                 label: orocrm.issue.summary.label
+            type:
+                label: orocrm.issue.type.label
             priority:
                 label: orocrm.issue.priority.label
             resolution:
@@ -50,6 +52,8 @@ datagrid:
                     data_name: issue.code
                 summary:
                     data_name: issue.summary
+                type:
+                    data_name: issue.type
                 priority:
                     data_name: priority.order
                 resolution:
@@ -72,6 +76,9 @@ datagrid:
                 summary:
                     type:      string
                     data_name: issue.summary
+                type:
+                    type:      string
+                    data_name: issue.type
                 priority:
                     type:      string
                     data_name: issue.priority

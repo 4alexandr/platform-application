@@ -96,6 +96,16 @@ class IssueType extends AbstractType
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'type',
+            'translatable_entity',
+            [
+                'label' => 'orocrm.issue.type.label',
+                'class' => 'OroCRM\Bundle\IssueBundle\Entity\Type',
+                'required' => true,
+            ]
+        );
     }
 
     /**

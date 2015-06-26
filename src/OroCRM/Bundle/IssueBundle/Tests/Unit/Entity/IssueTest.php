@@ -6,6 +6,7 @@ use OroCRM\Bundle\IssueBundle\Entity\Issue;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\IssueBundle\Entity\Priority;
 use OroCRM\Bundle\IssueBundle\Entity\Resolution;
+use OroCRM\Bundle\IssueBundle\Entity\Type;
 
 class IssueTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,6 +34,7 @@ class IssueTest extends \PHPUnit_Framework_TestCase
             array('description', 'Test Description'),
             array('priority', new Priority()),
             array('resolution', new Resolution()),
+            array('type', new Type()),
             array('createdAt', new \DateTime()),
             array('updatedAt', new \DateTime()),
         );

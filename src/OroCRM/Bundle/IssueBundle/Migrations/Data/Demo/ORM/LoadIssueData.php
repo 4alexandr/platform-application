@@ -66,6 +66,11 @@ class LoadIssueData implements FixtureInterface
             return;
         }
 
+        $types = $manager->getRepository('OroCRMIssueBundle:Type')->findAll();
+        if (empty($types)) {
+            return;
+        }
+
         $issues = array();
 
         for ($i = 0; $i < self::FIXTURES_COUNT; ++$i) {
@@ -81,6 +86,7 @@ class LoadIssueData implements FixtureInterface
 
             $issue->setPriority($this->getRandomEntity($priorities));
             $issue->setResolution($this->getRandomEntity($resolutions));
+            $issue->setType($this->getRandomEntity($types));
             $issue->setOwner($this->getRandomEntity($owners));
             $issue->setReporter($this->getRandomEntity($owners));
 
