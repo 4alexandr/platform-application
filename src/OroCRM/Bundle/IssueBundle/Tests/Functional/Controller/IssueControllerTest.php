@@ -13,7 +13,7 @@ class IssueControllerTest extends WebTestCase
 {
     protected function setUp()
     {
-        $this->initClient(array(), $this->generateBasicAuthHeader());
+        $this->initClient([], $this->generateBasicAuthHeader());
     }
 
     public function testCreate()
@@ -42,7 +42,7 @@ class IssueControllerTest extends WebTestCase
     {
         $response = $this->client->requestGrid(
             'issues-grid',
-            array('issues-grid[_filter][code][value]' => 'ISS-1')
+            ['issues-grid[_filter][code][value]' => 'ISS-1']
         );
 
         $result = $this->getJsonResponseContent($response, 200);
@@ -50,7 +50,7 @@ class IssueControllerTest extends WebTestCase
 
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('orocrm_issue_update', array('id' => $result['id']))
+            $this->getUrl('orocrm_issue_update', ['id' => $result['id']])
         );
 
         $form = $crawler->selectButton('Save and Close')->form();
@@ -72,7 +72,7 @@ class IssueControllerTest extends WebTestCase
     {
         $response = $this->client->requestGrid(
             'issues-grid',
-            array('issues-grid[_filter][code][value]' => 'ISS-1')
+            ['issues-grid[_filter][code][value]' => 'ISS-1']
         );
 
         $result = $this->getJsonResponseContent($response, 200);
@@ -80,7 +80,7 @@ class IssueControllerTest extends WebTestCase
 
         $this->client->request(
             'GET',
-            $this->getUrl('orocrm_issue_view', array('id' => $result['id']))
+            $this->getUrl('orocrm_issue_view', ['id' => $result['id']])
         );
         $result = $this->client->getResponse();
 

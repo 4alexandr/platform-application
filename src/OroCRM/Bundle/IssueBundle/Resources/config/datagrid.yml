@@ -131,3 +131,13 @@ datagrid:
                 label:         oro.grid.action.delete
                 icon:          trash
                 link:          delete_link
+
+    issues-children-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    and:
+                        - issue.parent = :parent
+            bind_parameters:
+                - parent

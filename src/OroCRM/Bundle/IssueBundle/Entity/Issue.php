@@ -142,12 +142,26 @@ class Issue extends ExtendIssue implements EmptyItem
      */
     protected $type;
 
+    /**
+     * @var parent
+     *
+     * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children"))
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     **/
+    protected $children;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->collaborators = new ArrayCollection();
         $this->related_issues = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -507,5 +521,79 @@ class Issue extends ExtendIssue implements EmptyItem
         $this->type = $type;
 
         return $this;
+    }
+
+    /**
+     * Checks if Issue support children.
+     *
+     * @return bool
+     */
+    public function isSupportChildren()
+    {
+        return $this->getType() && $this->getType()->getChildren()->count();
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param Issue $parent
+     *
+     * @return Issue
+     */
+    public function setParent(Issue $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return Issue
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add children.
+     *
+     * @param Issue $children
+     *
+     * @return Issue
+     */
+    public function addChild(Issue $children)
+    {
+        if ($children instanceof self && !$this->children->contains($children)) {
+            $this->children[] = $children;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove children.
+     *
+     * @param Issue $children
+     *
+     * @return Issue
+     */
+    public function removeChild(Issue $children)
+    {
+        $this->children->removeElement($children);
+
+        return $this;
+    }
+
+    /**
+     * Get children.
+     *
+     * @return Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

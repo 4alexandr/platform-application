@@ -11,38 +11,47 @@ class LoadTypeData implements FixtureInterface
     /**
      * @var array
      */
-    protected $data = array(
-        array(
+    protected $data = [
+        [
             'name' => 'bug',
             'label' => 'Bug',
-        ),
-        array(
+            'parent_name' => null,
+        ],
+        [
             'name' => 'task',
             'label' => 'Task',
-        ),
-        array(
+            'parent_name' => null,
+        ],
+        [
             'name' => 'story',
             'label' => 'Story',
-        ),
-        array(
+            'parent_name' => null,
+        ],
+        [
             'name' => 'subtask',
             'label' => 'Subtask',
-        ),
-    );
+            'parent_name' => 'story',
+        ],
+    ];
 
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
+        $entities = [];
         foreach ($this->data as $type) {
             if (!$this->isTypeExist($manager, $type['name'])) {
                 $entity = new Type();
 
                 $entity->setName($type['name']);
                 $entity->setLabel($type['label']);
+                if (isset($entities[$type['parent_name']])) {
+                    $entity->setParent($entities[$type['parent_name']]);
+                }
 
                 $manager->persist($entity);
+                $entities[$entity->getName()] = $entity;
             }
         }
 

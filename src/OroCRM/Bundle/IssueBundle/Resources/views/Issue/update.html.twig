@@ -1,7 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 
 {% oro_title_set({params : {"%entity.summary%": entity.summary, "%entityName%": 'orocrm.issue.entity_label'|trans }}) %}
-{% set entityId = entity.id %}
 
 {% block navButtons %}
     {% set html = UI.saveAndCloseButton() %}
@@ -10,19 +9,30 @@
     {{ UI.cancelButton(path('orocrm_issue_index')) }}
 {% endblock navButtons %}
 
-{% block pageHeader %}
-    {% if entityId %}
-        {% set breadcrumbs = {
-            'entity': entity,
-            'indexPath': path('orocrm_issue_index'),
-            'indexLabel': 'orocrm.issue.entity_plural_label'|trans,
-            'entityTitle': entity.summary
-        } %}
+{% block stats %}
+    {% if entity.id %}
         {{ parent() }}
-    {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'orocrm.issue.entity_label'|trans}) %}
-        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
+{% endblock stats %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('orocrm_issue_index'),
+        'indexLabel': 'orocrm.issue.entity_plural_label'|trans,
+        'entityTitle': entity.id ? entity.summary : 'oro.ui.create_entity'|trans({'%entityName%': 'orocrm.issue.entity_label'|trans})
+    } %}
+    {% if entity.parent %}
+        {% set breadcrumbs = breadcrumbs|merge({
+            additional: [
+                {
+                    'indexPath': path('orocrm_issue_view', {id: entity.parent.id}),
+                    'indexLabel': entity.parent.summary,
+                }
+            ]
+        }) %}
+    {% endif %}
+    {{ parent() }}
 {% endblock pageHeader %}
 
 {% block content_data %}
@@ -37,7 +47,7 @@
                 'data': [
                     form_row(form.code),
                     form_row(form.summary),
-                    form_row(form.type),
+                    form.type is defined ? form_row(form.type) : '',
                     form_row(form.description),
                     form_row(form.priority),
                     form_row(form.resolution),

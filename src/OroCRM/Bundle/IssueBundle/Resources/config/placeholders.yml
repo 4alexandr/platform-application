@@ -1,0 +1,9 @@
+placeholders:
+    view_content_data_additional_information:
+        items:
+            orocrm_issue_children: ~
+
+items:
+    orocrm_issue_children:
+        template: OroCRMIssueBundle:Issue:children.html.twig
+        applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %orocrm_issue.entity.class%)

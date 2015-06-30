@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class IssueType extends AbstractType
 {
@@ -14,6 +16,8 @@ class IssueType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetData']);
+
         $builder
             ->add(
                 'code',
@@ -96,16 +100,6 @@ class IssueType extends AbstractType
                 'required' => false,
             ]
         );
-
-        $builder->add(
-            'type',
-            'translatable_entity',
-            [
-                'label' => 'orocrm.issue.type.label',
-                'class' => 'OroCRM\Bundle\IssueBundle\Entity\Type',
-                'required' => true,
-            ]
-        );
     }
 
     /**
@@ -128,5 +122,42 @@ class IssueType extends AbstractType
     public function getName()
     {
         return 'orocrm_issue';
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $entity = $event->getData();
+
+        if ($entity === null) {
+            return;
+        }
+
+        if ($entity->getId()) {
+            return;
+        }
+
+        $form->add(
+            'type',
+            'translatable_entity',
+            [
+                'label' => 'orocrm.issue.type.label',
+                'class' => 'OroCRM\Bundle\IssueBundle\Entity\Type',
+                'required' => true,
+                'query_builder' => function (EntityRepository $repository) use ($entity) {
+                    if ($entity->getParent()) {
+                        return $repository->createQueryBuilder('type')
+                            ->where('type.parent = :parent')
+                            ->setParameter('parent', $entity->getParent()->getType()->getName());
+                    } else {
+                        return $repository->createQueryBuilder('type')
+                            ->where('type.parent IS NULL');
+                    }
+                },
+            ]
+        );
     }
 }

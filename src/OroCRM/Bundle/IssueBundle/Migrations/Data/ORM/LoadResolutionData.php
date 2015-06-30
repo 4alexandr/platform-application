@@ -11,36 +11,36 @@ class LoadResolutionData implements FixtureInterface
     /**
      * @var array
      */
-    protected $data = array(
-        array(
+    protected $data = [
+        [
             'name' => 'fixed',
             'label' => 'Fixed',
-        ),
-        array(
+        ],
+        [
             'name' => 'wont_fix',
             'label' => 'Won\'t Fix',
-        ),
-        array(
+        ],
+        [
             'name' => 'duplicate',
             'label' => 'Duplicate',
-        ),
-        array(
+        ],
+        [
             'name' => 'incomplete',
             'label' => 'Incomplete',
-        ),
-        array(
+        ],
+        [
             'name' => 'cannot_reproduce',
             'label' => 'Cannot Reproduce',
-        ),
-        array(
+        ],
+        [
             'name' => 'done',
             'label' => 'Done',
-        ),
-        array(
+        ],
+        [
             'name' => 'wont_do',
             'label' => 'Won\'t Do',
-        ),
-    );
+        ],
+    ];
 
     /**
      * {@inheritdoc}

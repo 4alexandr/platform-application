@@ -33,7 +33,7 @@ class IssueController extends Controller
      */
     public function viewAction(Issue $issue)
     {
-        return array('entity' => $issue);
+        return ['entity' => $issue];
     }
 
     /**
@@ -55,6 +55,34 @@ class IssueController extends Controller
         }
 
         $formAction = $this->get('router')->generate('orocrm_issue_create');
+
+        return $this->update($issue, $formAction);
+    }
+
+    /**
+     * @Route("/update/{id}/children", name="orocrm_issue_create_children", requirements={"id"="\d+"})
+     * @Template("OroCRMIssueBundle:Issue:update.html.twig")
+     */
+    public function createChildrenAction(Issue $parentIssue)
+    {
+        if (!$parentIssue->isSupportChildren()) {
+            throw $this->createNotFoundException();
+        }
+
+        $issue = new Issue();
+        $issue->setParent($parentIssue);
+
+        $defaultPriority = $this->getRepository('OroCRMIssueBundle:Priority')->find('major');
+        if ($defaultPriority) {
+            $issue->setPriority($defaultPriority);
+        }
+
+        $defaultType = $this->getRepository('OroCRMIssueBundle:Type')->find('bug');
+        if ($defaultType) {
+            $issue->setType($defaultType);
+        }
+
+        $formAction = $this->get('router')->generate('orocrm_issue_create_children', ['id' => $parentIssue->getId()]);
 
         return $this->update($issue, $formAction);
     }
@@ -96,23 +124,23 @@ class IssueController extends Controller
             );
 
             return $this->get('oro_ui.router')->redirectAfterSave(
-                array(
+                [
                     'route' => 'orocrm_issue_update',
-                    'parameters' => array('id' => $issue->getId()),
-                ),
-                array(
+                    'parameters' => ['id' => $issue->getId()],
+                ],
+                [
                     'route' => 'orocrm_issue_view',
-                    'parameters' => array('id' => $issue->getId()),
-                )
+                    'parameters' => ['id' => $issue->getId()],
+                ]
             );
         }
 
-        return array(
+        return [
             'entity' => $issue,
             'saved' => $saved,
             'form' => $this->get('orocrm_issue.form.handler.issue')->getForm()->createView(),
             'formAction' => $formAction,
-        );
+        ];
     }
 
     /**

@@ -48,6 +48,7 @@ class OroCRMIssueBundle implements Migration
         $table->addColumn('priority_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('resolution_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('type_name', 'string', ['notnull' => false, 'length' => 32]);
+        $table->addColumn('parent_id', 'integer', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
 
@@ -56,6 +57,7 @@ class OroCRMIssueBundle implements Migration
         $table->addIndex(['priority_name'], 'IDX_EF1CE971965BD3DF', []);
         $table->addIndex(['resolution_name'], 'IDX_EF1CE9718EEEA2E1', []);
         $table->addIndex(['type_name'], 'IDX_EF1CE971892CBB0E', []);
+        $table->addIndex(['parent_id'], 'IDX_EF1CE971727ACA70', []);
     }
 
     /**
@@ -134,10 +136,19 @@ class OroCRMIssueBundle implements Migration
 
         $table->addColumn('name', 'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('label', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('parent_name', 'string', ['notnull' => false, 'length' => 32]);
 
         $table->setPrimaryKey(['name']);
 
         $table->addUniqueIndex(['label'], 'UNIQ_72E455C8EA750E8');
+        $table->addIndex(['parent_name'], 'IDX_72E455C863C048B2', []);
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue_type'),
+            ['parent_name'],
+            ['name'],
+            ['onDelete' => 'CASCADE']
+        );
     }
 
     /**
@@ -176,6 +187,12 @@ class OroCRMIssueBundle implements Migration
             ['reporter_id'],
             ['id'],
             ['onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('orocrm_issue'),
+            ['parent_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
         );
     }
 

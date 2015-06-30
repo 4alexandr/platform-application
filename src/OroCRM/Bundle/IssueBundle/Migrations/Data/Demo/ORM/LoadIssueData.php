@@ -8,7 +8,7 @@ use OroCRM\Bundle\IssueBundle\Entity\Issue;
 
 class LoadIssueData implements FixtureInterface
 {
-    const FIXTURES_COUNT = 20;
+    const FIXTURES_COUNT = 5;
 
     /**
      * @var array
@@ -66,36 +66,47 @@ class LoadIssueData implements FixtureInterface
             return;
         }
 
-        $types = $manager->getRepository('OroCRMIssueBundle:Type')->findAll();
+        $types = $manager->getRepository('OroCRMIssueBundle:Type')->findBy([], ['parent' => 'ASC']);
         if (empty($types)) {
             return;
         }
 
-        $issues = array();
+        $issues = [];
+        $issues_by_type = [];
 
-        for ($i = 0; $i < self::FIXTURES_COUNT; ++$i) {
-            if ($manager->getRepository('OroCRMIssueBundle:Issue')->findOneBySummary(self::$fixtureSummary[$i])) {
-                // Issue with this summary is already exist
-                continue;
+        for ($i = 0, $i_max = count($types); $i < $i_max; ++$i) {
+            $type = $types[$i];
+
+            for ($j = 0; $j < self::FIXTURES_COUNT; ++$j) {
+                if ($manager->getRepository('OroCRMIssueBundle:Issue')->findOneBySummary(self::$fixtureSummary[$j])) {
+                    // Issue with this summary is already exist
+                    continue;
+                }
+
+                $issue = new Issue();
+                $issue->setCode('ISS-'.($j + 1));
+                $issue->setSummary(self::$fixtureSummary[$j]);
+                $issue->setDescription(str_repeat(self::$fixtureSummary[$j], 3));
+
+                $issue->setPriority($this->getRandomEntity($priorities));
+                $issue->setResolution($this->getRandomEntity($resolutions));
+                $issue->setOwner($this->getRandomEntity($owners));
+                $issue->setReporter($this->getRandomEntity($owners));
+
+                $issue->setType($type);
+                if ($type->getParent()) {
+                    $parent = $this->getRandomEntity($issues_by_type[$type->getParent()->getName()]);
+                    $issue->setParent($parent);
+                }
+
+                if (!empty($issues)) {
+                    $issue->addRelatedIssue($this->getRandomEntity($issues));
+                }
+
+                $manager->persist($issue);
+                $issues[] = $issue;
+                $issues_by_type[$issue->getType()->getName()][] = $issue;
             }
-
-            $issue = new Issue();
-            $issue->setCode('ISS-'.($i + 1));
-            $issue->setSummary(self::$fixtureSummary[$i]);
-            $issue->setDescription(str_repeat(self::$fixtureSummary[$i], 3));
-
-            $issue->setPriority($this->getRandomEntity($priorities));
-            $issue->setResolution($this->getRandomEntity($resolutions));
-            $issue->setType($this->getRandomEntity($types));
-            $issue->setOwner($this->getRandomEntity($owners));
-            $issue->setReporter($this->getRandomEntity($owners));
-
-            if (!empty($issues)) {
-                $issue->addRelatedIssue($this->getRandomEntity($issues));
-            }
-
-            $manager->persist($issue);
-            $issues[] = $issue;
         }
     }
 

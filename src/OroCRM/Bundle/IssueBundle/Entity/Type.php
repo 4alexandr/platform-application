@@ -3,6 +3,7 @@
 namespace OroCRM\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
@@ -26,6 +27,27 @@ class Type
      * @ORM\Column(name="label", type="string", length=255, unique=true)
      */
     protected $label;
+
+    /**
+     * @var parent
+     *
+     * @ORM\ManyToOne(targetEntity="Type", inversedBy="children"))
+     * @ORM\JoinColumn(name="parent_name", referencedColumnName="name", onDelete="CASCADE")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Type", mappedBy="parent")
+     **/
+    protected $children;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->children = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -81,5 +103,67 @@ class Type
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set parent.
+     *
+     * @param Type $parent
+     *
+     * @return Type
+     */
+    public function setParent(Type $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent.
+     *
+     * @return Type
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Add children.
+     *
+     * @param Type $children
+     *
+     * @return Type
+     */
+    public function addChild(Type $children)
+    {
+        $this->children[] = $children;
+
+        return $this;
+    }
+
+    /**
+     * Remove children.
+     *
+     * @param Type $children
+     *
+     * @return Type
+     */
+    public function removeChild(Type $children)
+    {
+        $this->children->removeElement($children);
+
+        return $this;
+    }
+
+    /**
+     * Get children.
+     *
+     * @return Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
     }
 }

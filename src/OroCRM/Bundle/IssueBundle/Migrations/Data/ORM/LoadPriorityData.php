@@ -11,28 +11,28 @@ class LoadPriorityData implements FixtureInterface
     /**
      * @var array
      */
-    protected $data = array(
-        array(
+    protected $data = [
+        [
             'label' => 'Trivial',
             'name' => 'trivial',
             'order' => 0,
-        ),
-        array(
+        ],
+        [
             'label' => 'Major',
             'name' => 'major',
             'order' => 1,
-        ),
-        array(
+        ],
+        [
             'label' => 'Critical',
             'name' => 'critical',
             'order' => 2,
-        ),
-        array(
+        ],
+        [
             'label' => 'Blocker',
             'name' => 'blocker',
             'order' => 3,
-        ),
-    );
+        ],
+    ];
 
     /**
      * {@inheritdoc}

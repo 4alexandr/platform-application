@@ -1,0 +1,13 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="responsive-cell">
+    <div class="box-type1">
+        <div class="title">
+            <span class="widget-title">{{ "orocrm.issue.entity_sub_label"|trans }}</span>
+        </div>
+
+        <div class="row-fluid">
+            {{ dataGrid.renderGrid('issues-children-grid', {parent: entity.id}) }}
+        </div>
+    </div>
+</div>
