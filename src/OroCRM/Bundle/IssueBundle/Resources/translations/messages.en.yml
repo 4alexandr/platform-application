@@ -14,13 +14,35 @@ orocrm:
         owner.label:                Assigned To
         reporter.label:             Reporter
         collaborators.label:        Collaborators
-        priority.label:             Priority
-        resolution.label:           Resolution
-        type.label:                 Type
+        priority:
+            label:                  Priority
+            entity_label:           Issue Priority
+            entity_plural_label:    Issue Priorities
+            label.label:            Label
+            name.label:             Name
+            order.label:            Order
+        resolution:
+            label:                  Resolution
+            entity_label:           Issue Resolution
+            entity_plural_label:    Issue Resolutions
+            label.label:            Label
+            name.label:             Name
+        type:
+            label:                  Type
+            entity_label:           Issue Type
+            entity_plural_label:    Issue Types
+            label.label:            Label
+            name.label:             Name
+            children.label:         Children
+            parent.label:           Parent
         related_issues.label:       Related Issues
+        children.label:             Children
+        parent.label:               Parent
+        workflow_item.label:        Workflow Item
+        workflow_step.label:        Status
 
         #
         # Messages
         #
 
-        saved_message: 				Issue saved
+        saved_message:              Issue saved

@@ -9,6 +9,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\UserBundle\Entity\User;
 use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
 use Oro\Bundle\FormBundle\Entity\EmptyItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * Issue.
@@ -17,13 +19,16 @@ use Oro\Bundle\FormBundle\Entity\EmptyItem;
  * @ORM\Entity(repositoryClass="OroCRM\Bundle\IssueBundle\Entity\Repository\IssueRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
- *  defaultValues={
- *      "ownership"={
- *          "owner_type"="USER",
- *          "owner_field_name"="owner",
- *          "owner_column_name"="owner_id"
- *      }
- *  }
+ *     defaultValues={
+ *         "ownership"={
+ *             "owner_type"="USER",
+ *             "owner_field_name"="owner",
+ *             "owner_column_name"="owner_id"
+ *         },
+ *         "workflow"={
+ *             "active_workflow"="issue_flow"
+ *         },
+ *     }
  * )
  */
 class Issue extends ExtendIssue implements EmptyItem
@@ -154,6 +159,22 @@ class Issue extends ExtendIssue implements EmptyItem
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
      **/
     protected $children;
+
+    /**
+     * @var WorkflowItem
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowItem;
+
+    /**
+     * @var WorkflowStep
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;
 
     public function __construct()
     {
@@ -595,5 +616,53 @@ class Issue extends ExtendIssue implements EmptyItem
     public function getChildren()
     {
         return $this->children;
+    }
+
+    /**
+     * Set workflowItem.
+     *
+     * @param WorkflowItem $workflowItem
+     *
+     * @return Issue
+     */
+    public function setWorkflowItem(WorkflowItem $workflowItem = null)
+    {
+        $this->workflowItem = $workflowItem;
+
+        return $this;
+    }
+
+    /**
+     * Get workflowItem.
+     *
+     * @return WorkflowItem
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * Set workflowStep.
+     *
+     * @param WorkflowStep $workflowStep
+     *
+     * @return Issue
+     */
+    public function setWorkflowStep(WorkflowStep $workflowStep = null)
+    {
+        $this->workflowStep = $workflowStep;
+
+        return $this;
+    }
+
+    /**
+     * Get workflowStep.
+     *
+     * @return WorkflowStep
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
     }
 }

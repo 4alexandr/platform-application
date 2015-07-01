@@ -12,6 +12,7 @@ datagrid:
                     - owner.id as ownerId
                     - CONCAT(reporter.firstName, CONCAT(' ', reporter.lastName)) as reporterName
                     - reporter.id as reporterId
+                    - workflowStep.label as workflowStepLabel
                 from:
                     - { table: %orocrm_issue.entity.class%, alias: issue }
                 join:
@@ -19,6 +20,7 @@ datagrid:
                         - { join: issue.priority, alias: priority }
                         - { join: issue.owner, alias: owner }
                         - { join: issue.reporter, alias: reporter }
+                        - { join: issue.workflowStep, alias: workflowStep }
         columns:
             code:
                 label: orocrm.issue.code.label
@@ -28,6 +30,8 @@ datagrid:
                 label: orocrm.issue.type.label
             priority:
                 label: orocrm.issue.priority.label
+            workflowStepLabel:
+                label: orocrm.issue.workflow_step.label
             resolution:
                 label: orocrm.issue.resolution.label
             reporterName:
@@ -56,6 +60,8 @@ datagrid:
                     data_name: issue.type
                 priority:
                     data_name: priority.order
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
                 resolution:
                     data_name: issue.resolution
                 ownerName:
@@ -82,9 +88,13 @@ datagrid:
                 priority:
                     type:      string
                     data_name: issue.priority
-                resolution:
-                    type:      string
-                    data_name: issue.resolution
+                workflowStepLabel:
+                    type:      entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: %orocrm_issue.entity.class%
                 ownerName:
                     type:      string
                     data_name: ownerName

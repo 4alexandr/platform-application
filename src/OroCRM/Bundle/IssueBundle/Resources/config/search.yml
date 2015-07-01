@@ -62,3 +62,11 @@ OroCRM\Bundle\IssueBundle\Entity\Issue:
                     name:                   last_name
                     target_type:            text
                     target_fields:          [reporter_last_name]
+        -
+            name: workflowStep
+            relation_type: many-to-one
+            relation_fields:
+                -
+                    name:                   label
+                    target_type:            text
+                    target_fields:          [workflow_step]

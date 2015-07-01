@@ -49,6 +49,8 @@ class OroCRMIssueBundle implements Migration
         $table->addColumn('resolution_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('type_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('parent_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
 
@@ -58,6 +60,8 @@ class OroCRMIssueBundle implements Migration
         $table->addIndex(['resolution_name'], 'IDX_EF1CE9718EEEA2E1', []);
         $table->addIndex(['type_name'], 'IDX_EF1CE971892CBB0E', []);
         $table->addIndex(['parent_id'], 'IDX_EF1CE971727ACA70', []);
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_EF1CE9711023C4EE', []);
+        $table->addIndex(['workflow_step_id'], 'IDX_EF1CE97171FE882C', []);
     }
 
     /**
@@ -193,6 +197,18 @@ class OroCRMIssueBundle implements Migration
             ['parent_id'],
             ['id'],
             ['onDelete' => 'CASCADE']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
         );
     }
 

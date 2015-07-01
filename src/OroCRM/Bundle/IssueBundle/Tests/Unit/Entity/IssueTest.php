@@ -110,4 +110,28 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($obj, $related1->getParent());
         $this->assertEquals($obj, $related2->getParent());
     }
+
+    public function testGetSetWorkflowItem()
+    {
+        $entity = new Issue();
+        $workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
+
+        $this->assertNull($entity->getWorkflowItem());
+
+        $entity->setWorkflowItem($workflowItem);
+
+        $this->assertEquals($workflowItem, $entity->getWorkflowItem());
+    }
+
+    public function testGetSetWorkflowStep()
+    {
+        $entity = new Issue();
+        $workflowStep = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowStep');
+
+        $this->assertNull($entity->getWorkflowStep());
+
+        $entity->setWorkflowStep($workflowStep);
+
+        $this->assertEquals($workflowStep, $entity->getWorkflowStep());
+    }
 }
