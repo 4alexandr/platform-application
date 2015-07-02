@@ -100,6 +100,14 @@ class IssueType extends AbstractType
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'tags',
+            'oro_tag_select',
+            [
+                'label' => 'oro.tag.entity_plural_label',
+            ]
+        );
     }
 
     /**

@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroTagBundle::macros.html.twig' as tag %}
 
 {% oro_title_set({params : {"%entity.summary%": entity.summary|default('N/A') }}) %}
 
@@ -85,6 +86,10 @@
                 {%- endfor -%}
                 {%- endset -%}
                 {{ UI.renderHtmlProperty('orocrm.issue.collaborators.label'|trans, collaboratorsData|raw) }}
+
+                {% if resource_granted('oro_tag_view') %}
+                    {{ UI.renderHtmlProperty('oro.tag.entity_plural_label'|trans, tag.renderView(entity)) }}
+                {% endif %}
 
                 {%- set relatedIssuesData -%}
                 {% for relatedIssue in entity.relatedIssues %}

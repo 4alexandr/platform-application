@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% oro_title_set({params : {"%entity.summary%": entity.summary, "%entityName%": 'orocrm.issue.entity_label'|trans }}) %}
 
@@ -53,6 +54,7 @@
                     form_row(form.resolution),
                     form.owner is defined ? form_row(form.owner) : '',
                     form.reporter is defined ? form_row(form.reporter) : '',
+                    form_row(form.tags),
                     form_row(form.related_issues),
                 ]
             }

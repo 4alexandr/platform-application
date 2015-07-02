@@ -23,5 +23,5 @@ services:
             - @orocrm_issue.form
             - @request
             - @doctrine.orm.entity_manager
-            - @oro_activity.manager
-            - @oro_entity.routing_helper
+        tags:
+            - { name: oro_tag.tag_manager }

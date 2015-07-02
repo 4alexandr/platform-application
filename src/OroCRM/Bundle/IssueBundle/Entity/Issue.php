@@ -11,6 +11,7 @@ use OroCRM\Bundle\IssueBundle\Model\ExtendIssue;
 use Oro\Bundle\FormBundle\Entity\EmptyItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
+use Oro\Bundle\TagBundle\Entity\Taggable;
 
 /**
  * Issue.
@@ -31,7 +32,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *     }
  * )
  */
-class Issue extends ExtendIssue implements EmptyItem
+class Issue extends ExtendIssue implements EmptyItem, Taggable
 {
     /**
      * @var int
@@ -175,6 +176,11 @@ class Issue extends ExtendIssue implements EmptyItem
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $workflowStep;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $tags;
 
     public function __construct()
     {
@@ -664,5 +670,35 @@ class Issue extends ExtendIssue implements EmptyItem
     public function getWorkflowStep()
     {
         return $this->workflowStep;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaggableId()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTags()
+    {
+        if (!$this->tags) {
+            $this->tags = new ArrayCollection();
+        }
+
+        return $this->tags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+
+        return $this;
     }
 }

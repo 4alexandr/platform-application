@@ -20,10 +20,10 @@ class IssueTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters($property, $value)
     {
-        $obj = new Issue();
+        $issue = new Issue();
 
-        call_user_func([$obj, 'set'.ucfirst($property)], $value);
-        $this->assertEquals($value, call_user_func([$obj, 'get'.ucfirst($property)]));
+        call_user_func([$issue, 'set'.ucfirst($property)], $value);
+        $this->assertEquals($value, call_user_func([$issue, 'get'.ucfirst($property)]));
     }
 
     public function settersAndGettersDataProvider()
@@ -42,73 +42,73 @@ class IssueTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePersist()
     {
-        $obj = new Issue();
+        $issue = new Issue();
 
-        $this->assertNull($obj->getCreatedAt());
-        $this->assertNull($obj->getUpdatedAt());
+        $this->assertNull($issue->getCreatedAt());
+        $this->assertNull($issue->getUpdatedAt());
 
-        $obj->prePersist();
-        $this->assertInstanceOf('\DateTime', $obj->getCreatedAt());
-        $this->assertInstanceOf('\DateTime', $obj->getUpdatedAt());
+        $issue->prePersist();
+        $this->assertInstanceOf('\DateTime', $issue->getCreatedAt());
+        $this->assertInstanceOf('\DateTime', $issue->getUpdatedAt());
     }
 
     public function testPreUpdate()
     {
-        $obj = new Issue();
+        $issue = new Issue();
 
-        $this->assertNull($obj->getUpdatedAt());
+        $this->assertNull($issue->getUpdatedAt());
 
-        $obj->preUpdate();
-        $this->assertInstanceOf('\DateTime', $obj->getUpdatedAt());
+        $issue->preUpdate();
+        $this->assertInstanceOf('\DateTime', $issue->getUpdatedAt());
     }
 
     public function testCollaborators()
     {
-        $obj = new Issue();
+        $issue = new Issue();
         $owner = new User();
         $reporter = new User();
 
-        $this->assertEquals(0, $obj->getCollaborators()->count());
+        $this->assertEquals(0, $issue->getCollaborators()->count());
 
-        $obj->setOwner($owner);
-        $obj->setReporter($reporter);
-        $this->assertEquals(2, $obj->getCollaborators()->count());
+        $issue->setOwner($owner);
+        $issue->setReporter($reporter);
+        $this->assertEquals(2, $issue->getCollaborators()->count());
     }
 
     public function testRelatedIssues()
     {
-        $obj = new Issue();
+        $issue = new Issue();
         $related1 = new Issue();
         $related2 = new Issue();
 
-        $this->assertEquals(0, $obj->getRelatedIssues()->count());
+        $this->assertEquals(0, $issue->getRelatedIssues()->count());
 
-        $obj->addRelatedIssue($related1);
-        $obj->addRelatedIssue($related2);
-        $obj->addRelatedIssue($related1);
+        $issue->addRelatedIssue($related1);
+        $issue->addRelatedIssue($related2);
+        $issue->addRelatedIssue($related1);
 
-        $this->assertEquals(2, $obj->getRelatedIssues()->count());
+        $this->assertEquals(2, $issue->getRelatedIssues()->count());
     }
 
     public function testChildren()
     {
-        $obj = new Issue();
+        $issue = new Issue();
         $related1 = new Issue();
         $related2 = new Issue();
 
-        $this->assertEquals(0, $obj->getChildren()->count());
+        $this->assertEquals(0, $issue->getChildren()->count());
         $this->assertEquals(null, $related1->getParent());
         $this->assertEquals(null, $related2->getParent());
 
-        $related1->setParent($obj);
-        $related2->setParent($obj);
-        $obj->addChild($related1);
-        $obj->addChild($related2);
-        $obj->addChild($related1);
+        $related1->setParent($issue);
+        $related2->setParent($issue);
+        $issue->addChild($related1);
+        $issue->addChild($related2);
+        $issue->addChild($related1);
 
-        $this->assertEquals(2, $obj->getChildren()->count());
-        $this->assertEquals($obj, $related1->getParent());
-        $this->assertEquals($obj, $related2->getParent());
+        $this->assertEquals(2, $issue->getChildren()->count());
+        $this->assertEquals($issue, $related1->getParent());
+        $this->assertEquals($issue, $related2->getParent());
     }
 
     public function testGetSetWorkflowItem()
@@ -133,5 +133,15 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $entity->setWorkflowStep($workflowStep);
 
         $this->assertEquals($workflowStep, $entity->getWorkflowStep());
+    }
+
+    public function testGetTags()
+    {
+        $issue = new Issue();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $issue->getTags());
+        $this->assertTrue($issue->getTags()->isEmpty());
+
+        $issue->setTags(['tag']);
+        $this->assertEquals(['tag'], $issue->getTags());
     }
 }

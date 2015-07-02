@@ -5,18 +5,31 @@ namespace OroCRM\Bundle\IssueBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\TagBundle\Entity\TagManager;
+use Oro\Bundle\TagBundle\Form\Handler\TagHandlerInterface;
 use OroCRM\Bundle\IssueBundle\Entity\Issue;
 
-class IssueHandler
+class IssueHandler implements TagHandlerInterface
 {
-    /** @var FormInterface */
+    /**
+     * @var FormInterface
+     */
     protected $form;
 
-    /** @var Request */
+    /**
+     * @var Request
+     */
     protected $request;
 
-    /** @var ObjectManager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
+
+    /**
+     * @var TagManager
+     */
+    protected $tagManager;
 
     /**
      * @param FormInterface $form
@@ -66,6 +79,7 @@ class IssueHandler
     {
         $this->manager->persist($entity);
         $this->manager->flush();
+        $this->tagManager->saveTagging($entity);
     }
 
     /**
@@ -76,5 +90,13 @@ class IssueHandler
     public function getForm()
     {
         return $this->form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTagManager(TagManager $tagManager)
+    {
+        $this->tagManager = $tagManager;
     }
 }
