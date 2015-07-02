@@ -340,6 +340,16 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
     }
 
     /**
+     * Update updatedAt.
+     *
+     * @return Issue
+     */
+    public function updateUpdatedAt()
+    {
+        return $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -353,7 +363,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function preUpdate()
     {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updateUpdatedAt();
     }
 
     /**

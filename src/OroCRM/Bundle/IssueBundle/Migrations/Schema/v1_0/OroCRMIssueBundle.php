@@ -5,9 +5,24 @@ namespace OroCRM\Bundle\IssueBundle\Migrations\Schema\v1_0;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
-class OroCRMIssueBundle implements Migration
+class OroCRMIssueBundle implements Migration, NoteExtensionAwareInterface
 {
+    /**
+     * @var NoteExtension
+     */
+    protected $noteExtension;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
+    }
+
     /**
      * @inheritdoc
      */
@@ -25,6 +40,8 @@ class OroCRMIssueBundle implements Migration
         $this->addOrocrmIssueForeignKeys($schema);
         $this->addOrocrmIssueToCollaboratorForeignKeys($schema);
         $this->addOrocrmIssueToRelatedIssueForeignKeys($schema);
+
+        $this->noteExtension->addNoteAssociation($schema, 'orocrm_issue');
     }
 
     /**
