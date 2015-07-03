@@ -4,6 +4,7 @@ namespace OroCRM\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity
@@ -17,6 +18,13 @@ class Resolution
      *
      * @ORM\Column(name="name", type="string", length=32)
      * @ORM\Id
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 

@@ -4,6 +4,15 @@
 {% set pageTitle = 'orocrm.issue.entity_plural_label'|trans %}
 
 {% block navButtons %}
+	{% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+        entity_class: entity_class,
+        exportProcessor: 'orocrm_issue',
+        exportTemplateProcessor: 'orocrm_issue',
+        importProcessor: 'orocrm_issue.add_or_replace',
+        importTitle: 'oro.importexport.import.entity'|trans({'%entityName%': 'orocrm.issue.entity_plural_label'|trans}),
+        dataGridName: gridName
+    } %}
+
     {{ UI.addButton({
         'path' : path('orocrm_issue_create'),
         'entity_label': 'orocrm.issue.entity_label'|trans

@@ -24,6 +24,7 @@ class IssueController extends Controller
     public function indexAction()
     {
         return [
+            'entity_class' => $this->container->getParameter('orocrm_issue.entity.class'),
         ];
     }
 

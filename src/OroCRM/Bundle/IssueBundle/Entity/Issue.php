@@ -40,6 +40,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10
+     *          }
+     *      }
+     * )
      */
     private $id;
 
@@ -47,6 +54,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=20,
+     *              "identity"=true
+     *          }
+     *      }
+     * )
      */
     private $code;
 
@@ -54,6 +69,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=30
+     *          }
+     *      }
+     * )
      */
     private $summary;
 
@@ -61,6 +83,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40
+     *          }
+     *      }
+     * )
      */
     private $description;
 
@@ -72,6 +101,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
+     *          },
+     *          "importexport"={
+     *              "order"=120
      *          }
      *      }
      * )
@@ -86,6 +118,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
+     *          },
+     *          "importexport"={
+     *              "order"=130
      *          }
      *      }
      * )
@@ -97,6 +132,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=100,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -105,6 +148,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=90,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $reporter;
 
@@ -113,6 +164,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinTable(name="orocrm_issue_to_collaborator")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $collaborators;
 
@@ -121,6 +179,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Priority")
      * @ORM\JoinColumn(name="priority_name", referencedColumnName="name", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $priority;
 
@@ -129,6 +195,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Resolution")
      * @ORM\JoinColumn(name="resolution_name", referencedColumnName="name", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=80,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $resolution;
 
@@ -137,6 +211,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToMany(targetEntity="Issue")
      * @ORM\JoinTable(name="orocrm_issue_to_related_issue")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $related_issues;
 
@@ -145,6 +226,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Type")
      * @ORM\JoinColumn(name="type_name", referencedColumnName="name", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $type;
 
@@ -153,11 +242,26 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children"))
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=110,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      */
     protected $parent;
 
     /**
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      **/
     protected $children;
 
@@ -166,6 +270,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
      * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $workflowItem;
 
@@ -174,11 +285,25 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $workflowStep;
 
     /**
      * @var ArrayCollection
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $tags;
 
