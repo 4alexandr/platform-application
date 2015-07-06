@@ -100,18 +100,6 @@ class IssueController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="orocrm_issue_delete", requirements={"id"="\d+"}, methods="DELETE")
-     * @Template
-     */
-    public function deleteAction(Issue $issue)
-    {
-        $this->getDoctrine()->getManager()->remove($issue);
-        $this->getDoctrine()->getManager()->flush($issue);
-
-        return $this->redirect($this->generateUrl('orocrm_issue_index'));
-    }
-
-    /**
      * @param Issue  $issue
      * @param string $formAction
      */

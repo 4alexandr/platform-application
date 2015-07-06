@@ -6,6 +6,7 @@ orocrm:
         entity_label:               Issue
         entity_plural_label:        Issues
         entity_sub_label:           Subtask
+        entity_description:         Issues
 
         id.label:                   Id
         code.label:                 Code

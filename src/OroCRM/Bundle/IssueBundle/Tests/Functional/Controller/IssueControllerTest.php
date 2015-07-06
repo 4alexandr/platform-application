@@ -26,6 +26,7 @@ class IssueControllerTest extends WebTestCase
         $form['orocrm_issue[description]'] = 'New description';
         $form['orocrm_issue[owner]'] = '1';
         $form['orocrm_issue[reporter]'] = '1';
+        $form['orocrm_issue[type]'] = 'story';
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -33,6 +34,59 @@ class IssueControllerTest extends WebTestCase
 
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains('Issue saved', $crawler->html());
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testCreateChildren()
+    {
+        $response = $this->client->requestGrid(
+            'issues-grid',
+            ['issues-grid[_filter][code][value]' => 'ISS-1']
+        );
+
+        $result = $this->getJsonResponseContent($response, 200);
+        $result = reset($result['data']);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->getUrl('orocrm_issue_create_children', ['id' => $result['id']])
+        );
+
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['orocrm_issue[code]'] = 'SUB-1';
+        $form['orocrm_issue[summary]'] = 'New subtask';
+        $form['orocrm_issue[owner]'] = 1;
+
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+        $result = $this->client->getResponse();
+
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains('Issue saved', $crawler->html());
+    }
+
+    /**
+     * @depends testCreateChildren
+     */
+    public function testCreateChildrenParentError()
+    {
+        $response = $this->client->requestGrid(
+            'issues-grid',
+            ['issues-grid[_filter][code][value]' => 'SUB-1']
+        );
+
+        $result = $this->getJsonResponseContent($response, 200);
+        $result = reset($result['data']);
+
+        $crawler = $this->client->request(
+            'GET',
+            $this->getUrl('orocrm_issue_create_children', ['id' => $result['id']])
+        );
+        $result = $this->client->getResponse();
+
+        $this->assertHtmlResponseStatusCodeEquals($result, 404);
     }
 
     /**

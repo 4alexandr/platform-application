@@ -121,7 +121,7 @@ datagrid:
                     - id
             delete_link:
                 type:       url
-                route:      orocrm_issue_delete
+                route:      orocrm_api_delete_issue
                 params:
                     - id
         actions:

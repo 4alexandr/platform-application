@@ -84,7 +84,7 @@ class LoadIssueData implements FixtureInterface
                 }
 
                 $issue = new Issue();
-                $issue->setCode('ISS-'.($j + 1));
+                $issue->setCode('ISS-'.($i * self::FIXTURES_COUNT + $j + 1));
                 $issue->setSummary(self::$fixtureSummary[$j]);
                 $issue->setDescription(str_repeat(self::$fixtureSummary[$j], 3));
 

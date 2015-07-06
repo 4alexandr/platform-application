@@ -1,12 +1,20 @@
 parameters:
-    orocrm_issue.form.type.issue.class:               OroCRM\Bundle\IssueBundle\Form\Type\IssueType
-    orocrm_issue.form.handler.issue.class:            OroCRM\Bundle\IssueBundle\Form\Handler\IssueHandler
+    orocrm_issue.form.type.issue.class:             OroCRM\Bundle\IssueBundle\Form\Type\IssueType
+    orocrm_issue.form.type.issue_api.class:         OroCRM\Bundle\IssueBundle\Form\Type\IssueApiType
+    orocrm_issue.form.handler.issue.class:          OroCRM\Bundle\IssueBundle\Form\Handler\IssueHandler
+    orocrm_issue.form.handler.issue_api.class:      OroCRM\Bundle\IssueBundle\Form\Handler\IssueApiHandler
+    orocrm_issue.manager.api.class:                 Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 services:
     orocrm_issue.form.type.issue:
         class: %orocrm_issue.form.type.issue.class%
         tags:
             - { name: form.type, alias: orocrm_issue }
+
+    orocrm_issue.form.type.issue_api:
+        class: %orocrm_issue.form.type.issue_api.class%
+        tags:
+            - { name: form.type, alias: issue }
 
     orocrm_issue.form:
         class: Symfony\Component\Form\Form
@@ -15,6 +23,14 @@ services:
         arguments:
             - 'orocrm_issue'
             - 'orocrm_issue'
+
+    orocrm_issue.form.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'issue'
 
     orocrm_issue.form.handler.issue:
         class: %orocrm_issue.form.handler.issue.class%
@@ -25,3 +41,20 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - { name: oro_tag.tag_manager }
+
+    orocrm_issue.form.handler.issue_api:
+        class: %orocrm_issue.form.handler.issue.class%
+        scope: request
+        arguments:
+            - @orocrm_issue.form.api
+            - @request
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: oro_tag.tag_manager }
+
+    orocrm_issue.manager.api:
+        class: %orocrm_issue.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %orocrm_issue.entity.class%
+            - @doctrine.orm.entity_manager
