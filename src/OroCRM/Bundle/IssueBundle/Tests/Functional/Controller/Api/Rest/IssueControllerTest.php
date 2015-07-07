@@ -51,6 +51,26 @@ class IssueControllerTest extends WebTestCase
     }
 
     /**
+     * @depends testCreate
+     *
+     * @param int $id
+     */
+    public function testCreateChildError($id)
+    {
+        $this->client->request('POST', $this->getUrl('orocrm_api_post_issue'), [
+            'code' => 'SUB-1',
+            'summary' => 'New subtask',
+            'priority' => 'major',
+            'type' => 'bug',
+            'owner' => '1',
+            'parent' => $id,
+        ]);
+        $issue = $this->getJsonResponseContent($this->client->getResponse(), 400);
+
+        $this->assertEquals('Validation Failed', $issue['message']);
+    }
+
+    /**
      * @depends testCreateChild
      */
     public function testCget()

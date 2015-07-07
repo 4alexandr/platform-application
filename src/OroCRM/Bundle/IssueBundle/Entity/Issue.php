@@ -570,7 +570,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function removeCollaborator(User $collaborator)
     {
-        $this->collaborators->removeElement($collaborators);
+        $this->collaborators->removeElement($collaborator);
 
         return $this;
     }

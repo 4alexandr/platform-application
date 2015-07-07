@@ -146,7 +146,9 @@ class Type
      */
     public function addChild(Type $children)
     {
-        $this->children[] = $children;
+        if ($children instanceof self && !$this->children->contains($children)) {
+            $this->children[] = $children;
+        }
 
         return $this;
     }

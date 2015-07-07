@@ -40,6 +40,12 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testIsEmpty()
+    {
+        $issue = new Issue();
+        $this->assertTrue($issue->isEmpty());
+    }
+
     public function testPrePersist()
     {
         $issue = new Issue();
@@ -73,6 +79,9 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $issue->setOwner($owner);
         $issue->setReporter($reporter);
         $this->assertEquals(2, $issue->getCollaborators()->count());
+
+        $issue->removeCollaborator($reporter);
+        $this->assertEquals(1, $issue->getCollaborators()->count());
     }
 
     public function testRelatedIssues()
@@ -88,6 +97,9 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $issue->addRelatedIssue($related1);
 
         $this->assertEquals(2, $issue->getRelatedIssues()->count());
+
+        $issue->removeRelatedIssue($related1);
+        $this->assertEquals(1, $issue->getRelatedIssues()->count());
     }
 
     public function testChildren()
@@ -109,6 +121,9 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, $issue->getChildren()->count());
         $this->assertEquals($issue, $related1->getParent());
         $this->assertEquals($issue, $related2->getParent());
+
+        $issue->removeChild($related1);
+        $this->assertEquals(1, $issue->getChildren()->count());
     }
 
     public function testGetSetWorkflowItem()
