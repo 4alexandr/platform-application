@@ -32,6 +32,14 @@ services:
             - ~
             - 'issue'
 
+    orocrm_issue.form.api.soap:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'issue'
+            - 'issue'
+
     orocrm_issue.form.handler.issue:
         class: %orocrm_issue.form.handler.issue.class%
         scope: request
@@ -47,6 +55,16 @@ services:
         scope: request
         arguments:
             - @orocrm_issue.form.api
+            - @request
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: oro_tag.tag_manager }
+
+    orocrm_issue.form.handler.issue_api.soap:
+        class: %orocrm_issue.form.handler.issue.class%
+        scope: request
+        arguments:
+            - @orocrm_issue.form.api.soap
             - @request
             - @doctrine.orm.entity_manager
         tags:

@@ -1,0 +1,2 @@
+classes:
+  - OroCRM\Bundle\IssueBundle\Controller\Api\Soap\IssueController

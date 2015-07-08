@@ -181,6 +181,7 @@ class IssueController extends RestController implements ClassResourceInterface
                 break;
             case 'collaborators':
             case 'children':
+            case 'related_issues':
                 $value = $value->map(function ($item) {
                     return $item->getId();
                 })->toArray();

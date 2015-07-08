@@ -4,6 +4,7 @@ namespace OroCRM\Bundle\IssueBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -40,6 +41,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -48,12 +50,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string")
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -63,12 +66,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string")
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -77,12 +81,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $summary;
+    protected $summary;
 
     /**
      * @var string
      *
      * @ORM\Column(type="text", nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -91,12 +96,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $description;
+    protected $description;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     * @Soap\ComplexType("dateTime", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -108,12 +114,13 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     * @Soap\ComplexType("dateTime", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -125,13 +132,14 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *      }
      * )
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -148,6 +156,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="reporter_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -164,6 +173,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinTable(name="orocrm_issue_to_collaborator")
+     * @Soap\ComplexType("int[]", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -179,6 +189,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Priority")
      * @ORM\JoinColumn(name="priority_name", referencedColumnName="name", onDelete="SET NULL")
+     * @Soap\ComplexType("string")
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -195,6 +206,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Resolution")
      * @ORM\JoinColumn(name="resolution_name", referencedColumnName="name", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -211,6 +223,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToMany(targetEntity="Issue")
      * @ORM\JoinTable(name="orocrm_issue_to_related_issue")
+     * @Soap\ComplexType("int[]", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -226,6 +239,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Type")
      * @ORM\JoinColumn(name="type_name", referencedColumnName="name", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -242,6 +256,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Issue", inversedBy="children"))
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -255,6 +270,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
 
     /**
      * @ORM\OneToMany(targetEntity="Issue", mappedBy="parent")
+     * @Soap\ComplexType("int[]", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -270,6 +286,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
      * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -285,6 +302,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("int", nillable=true)
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -552,10 +570,11 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function addCollaborator(User $collaborator)
+    public function addCollaborator($collaborator)
     {
-        if (!$this->getCollaborators()->contains($collaborator)) {
-            $this->collaborators[] = $collaborator;
+        $collaborators = $this->getCollaborators();
+        if ($collaborator && is_object($collaborators) && !$collaborators->contains($collaborator)) {
+            $collaborators->add($collaborator);
         }
 
         return $this;
@@ -568,9 +587,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function removeCollaborator(User $collaborator)
+    public function removeCollaborator($collaborator)
     {
-        $this->collaborators->removeElement($collaborator);
+        $this->getCollaborators()->removeElement($collaborator);
 
         return $this;
     }
@@ -582,6 +601,10 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function getCollaborators()
     {
+        if (!$this->collaborators) {
+            $this->collaborators = new ArrayCollection();
+        }
+
         return $this->collaborators;
     }
 
@@ -634,8 +657,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function addRelatedIssue($relatedIssue)
     {
-        if ($relatedIssue instanceof self && !$this->related_issues->contains($relatedIssue)) {
-            $this->related_issues[] = $relatedIssue;
+        $related_issues = $this->getRelatedIssues();
+        if ($relatedIssue && is_object($related_issues) && !$related_issues->contains($relatedIssue)) {
+            $related_issues->add($relatedIssue);
         }
 
         return $this;
@@ -648,9 +672,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function removeRelatedIssue(Issue $relatedIssue)
+    public function removeRelatedIssue($relatedIssue)
     {
-        $this->related_issues->removeElement($relatedIssue);
+        $this->getRelatedIssues()->removeElement($relatedIssue);
 
         return $this;
     }
@@ -662,6 +686,10 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function getRelatedIssues()
     {
+        if (!$this->related_issues) {
+            $this->related_issues = new ArrayCollection();
+        }
+
         return $this->related_issues;
     }
 
@@ -702,7 +730,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function setParent(Issue $parent = null)
+    public function setParent($parent = null)
     {
         $this->parent = $parent;
 
@@ -726,10 +754,11 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function addChild(Issue $children)
+    public function addChild($children)
     {
-        if ($children instanceof self && !$this->children->contains($children)) {
-            $this->children[] = $children;
+        $childrens = $this->getChildren();
+        if ($children && is_object($childrens) && !$childrens->contains($children)) {
+            $childrens->add($children);
         }
 
         return $this;
@@ -742,9 +771,9 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function removeChild(Issue $children)
+    public function removeChild($children)
     {
-        $this->children->removeElement($children);
+        $this->getChildren()->removeElement($children);
 
         return $this;
     }
@@ -756,6 +785,10 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      */
     public function getChildren()
     {
+        if (!$this->children) {
+            $this->children = new ArrayCollection();
+        }
+
         return $this->children;
     }
 
@@ -766,7 +799,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function setWorkflowItem(WorkflowItem $workflowItem = null)
+    public function setWorkflowItem($workflowItem = null)
     {
         $this->workflowItem = $workflowItem;
 
@@ -790,7 +823,7 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
      *
      * @return Issue
      */
-    public function setWorkflowStep(WorkflowStep $workflowStep = null)
+    public function setWorkflowStep($workflowStep = null)
     {
         $this->workflowStep = $workflowStep;
 
