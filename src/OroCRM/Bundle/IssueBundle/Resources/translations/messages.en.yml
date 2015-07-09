@@ -47,3 +47,7 @@ orocrm:
         #
 
         saved_message:              Issue saved
+        dashboard:
+            by_status:
+                title:              Issues by status
+                description:        Issues by status

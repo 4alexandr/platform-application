@@ -1,0 +1,6 @@
+oro_dashboard_config:
+    widgets:
+        issues_by_status:
+            label:       orocrm.issue.dashboard.by_status.title
+            route:       orocrm_issue_dashboard_by_status_chart
+            description: orocrm.issue.dashboard.by_status.description
