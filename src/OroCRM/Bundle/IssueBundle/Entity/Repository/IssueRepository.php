@@ -12,20 +12,20 @@ use Doctrine\ORM\EntityRepository;
  */
 class IssueRepository extends EntityRepository
 {
-	/**
-     * Get issues by status
+    /**
+     * Get issues by status.
      *
      * @return array
      */
     public function getCountByStatus()
     {
         $qb = $this->getEntityManager()
-        	->getRepository('OroWorkflowBundle:WorkflowStep')
-        	->createQueryBuilder('workflow')
-        	->select('workflow.label as label, workflow.name, COUNT(issue) as issue_count')
-        	->leftJoin('OroCRMIssueBundle:Issue', 'issue', 'WITH', 'issue.workflowStep = workflow')
-        	->groupBy('workflow.name')
-        	->orderBy('workflow.label', 'ASC');
+            ->getRepository('OroWorkflowBundle:WorkflowStep')
+            ->createQueryBuilder('workflow')
+            ->select('workflow.label as label, workflow.name, COUNT(issue) as issue_count')
+            ->leftJoin('OroCRMIssueBundle:Issue', 'issue', 'WITH', 'issue.workflowStep = workflow')
+            ->groupBy('workflow.name')
+            ->orderBy('workflow.label', 'ASC');
 
         $data = $qb->getQuery()->getArrayResult();
 

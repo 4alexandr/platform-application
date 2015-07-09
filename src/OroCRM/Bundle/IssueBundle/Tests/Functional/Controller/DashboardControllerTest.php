@@ -26,4 +26,19 @@ class DashboardControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains('Issues by status', $result->getContent());
     }
+
+    public function testLastIssuesAction()
+    {
+        $crawler = $this->client->request('GET',
+            $this->getUrl('oro_dashboard_widget', [
+                'widget' => 'last_issues',
+                'bundle' => 'OroCRMIssueBundle',
+                'name' => 'lastIssues',
+            ])
+        );
+
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains('Latest issues', $result->getContent());
+    }
 }

@@ -4,7 +4,6 @@ namespace OroCRM\Bundle\IssueBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
 use Oro\Bundle\DashboardBundle\Migrations\Data\ORM\AbstractDashboardFixture;
 
 class LoadDashboardData extends AbstractDashboardFixture implements DependentFixtureInterface
@@ -27,6 +26,9 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
         if ($mainDashboard) {
             $mainDashboard->addWidget(
                 $this->createWidgetModel('issues_by_status', [0, 10])
+            );
+            $mainDashboard->addWidget(
+                $this->createWidgetModel('last_issues', [0, 20])
             );
 
             $manager->flush();

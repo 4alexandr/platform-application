@@ -3,7 +3,6 @@
 namespace OroCRM\Bundle\IssueBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -32,7 +31,7 @@ class DashboardController extends Controller
                 'name' => 'bar_chart',
                 'data_schema' => [
                     'label' => ['field_name' => 'label'],
-                    'value' => ['field_name' => 'issue_count']
+                    'value' => ['field_name' => 'issue_count'],
                 ],
                 'settings' => ['xNoTicks' => 2],
             ])

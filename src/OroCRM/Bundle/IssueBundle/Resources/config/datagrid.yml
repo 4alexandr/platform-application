@@ -151,3 +151,58 @@ datagrid:
                         - issue.parent = :parent
             bind_parameters:
                 - parent
+
+    issues-dashboard-grid:
+        options:
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+        source:
+            type: orm
+            query:
+                select:
+                    - issue
+                    - workflowStep.label as workflowStepLabel
+                from:
+                    - { table: %orocrm_issue.entity.class%, alias: issue }
+                join:
+                    left:
+                        - { join: issue.workflowStep, alias: workflowStep }
+                        - { join: issue.collaborators, alias: collaborators }
+                where:
+                    and:
+                        - collaborators.id = :user
+                orderBy:
+                    - column: issue.updatedAt
+                      dir: DESC
+            bind_parameters:
+                - user
+        columns:
+            code:
+                label: orocrm.issue.code.label
+            summary:
+                label: orocrm.issue.summary.label
+            type:
+                label: orocrm.issue.type.label
+            priority:
+                label: orocrm.issue.priority.label
+            workflowStepLabel:
+                label: orocrm.issue.workflow_step.label
+            resolution:
+                label: orocrm.issue.resolution.label
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      orocrm_issue_view
+                params:
+                    - id
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                icon:          eye-open
+                link:          view_link
+                rowAction:     true

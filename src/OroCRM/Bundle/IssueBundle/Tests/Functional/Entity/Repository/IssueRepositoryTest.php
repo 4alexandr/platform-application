@@ -29,10 +29,10 @@ class IssueRepositoryTest extends WebTestCase
 
         $this->assertEquals(4, count($data));
 
-        for($i = 0, $i_max = count($data); $i < $i_max; ++$i){
-            if ( $data[$i]['name'] === 'open' ) {
+        for ($i = 0, $i_max = count($data); $i < $i_max; ++$i) {
+            if ($data[$i]['name'] === 'open') {
                 $this->assertGreaterThan(0, $data[$i]['issue_count']);
-            }else{
+            } else {
                 $this->assertEquals(0, $data[$i]['issue_count']);
             }
         }

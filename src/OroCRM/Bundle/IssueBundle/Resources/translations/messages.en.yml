@@ -51,3 +51,7 @@ orocrm:
             by_status:
                 title:              Issues by status
                 description:        Issues by status
+            last_issues:
+                title:              Latest issues
+                description:        Latest related to you issues
+                view_all:           View all
