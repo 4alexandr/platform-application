@@ -152,6 +152,17 @@ datagrid:
             bind_parameters:
                 - parent
 
+    issues-user-grid:
+        extends: issues-grid
+        source:
+            query:
+                where:
+                    or:
+                        - owner.id = :user
+                        - reporter.id = :user
+            bind_parameters:
+                - user
+
     issues-dashboard-grid:
         options:
             toolbarOptions:
