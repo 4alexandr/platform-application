@@ -43,10 +43,9 @@ orocrm:
         workflow_step.label:        Status
 
         #
-        # Messages
-        #
 
         saved_message:              Issue saved
+
         dashboard:
             by_status:
                 title:              Issues by status
@@ -55,3 +54,7 @@ orocrm:
                 title:              Latest issues
                 description:        Latest related to you issues
                 view_all:           View all
+
+        assign_entity: Assign issue
+        assign_entity.title: Assign a issue to this user
+        assign_entity.widget_title: Assign issue to %username%

@@ -1,0 +1,26 @@
+{% set buttonConfig = {
+    'dataUrl': path('orocrm_issue_create_assign', {'id': entity.id}),
+    'aCss': 'no-hash',
+    'iCss': 'icon-list-alt',
+    'dataId': entity.id,
+    'label': 'orocrm.issue.assign_entity'|trans,
+    'title': 'orocrm.issue.assign_entity.title'|trans,
+    'widget' : {
+        'type' : 'dialog',
+        'multiple' : true,
+        'reload-grid-name' : 'user-issues-grid',
+        'options' : {
+            'alias': 'assign-issue-dialog',
+            'dialogOptions' : {
+                'title' : 'orocrm.issue.assign_entity.widget_title'|trans({'%username%': entity|oro_format_name}),
+                'allowMaximize': true,
+                'allowMinimize': true,
+                'dblclick': 'maximize',
+                'maximizedHeightDecreaseBy': 'minimize-bar',
+                'width': 1100
+            }
+        }
+    }
+} %}
+{% block button %}
+{% endblock button %}

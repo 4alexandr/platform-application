@@ -67,6 +67,22 @@ class IssueControllerTest extends WebTestCase
         $this->assertContains('Issue saved', $crawler->html());
     }
 
+    public function testCreateAssign()
+    {
+        $crawler = $this->client->request('GET', $this->getUrl('orocrm_issue_create_assign', ['id' => 1]));
+
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['orocrm_issue[code]'] = 'ISS-1';
+        $form['orocrm_issue[summary]'] = 'New issue';
+
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+        $result = $this->client->getResponse();
+
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains('Issue saved', $crawler->html());
+    }
+
     /**
      * @depends testCreateChildren
      */

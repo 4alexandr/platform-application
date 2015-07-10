@@ -1,2 +1,11 @@
 parameters:
     orocrm_issue.entity.class:                       OroCRM\Bundle\IssueBundle\Entity\Issue
+
+services:
+   orocrm_issue.widget_provider.actions.assign_issue:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - orocrm_assign_issue_button
+            - orocrm_assign_issue_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: activity }

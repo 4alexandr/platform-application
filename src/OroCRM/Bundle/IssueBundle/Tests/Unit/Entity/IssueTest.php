@@ -159,4 +159,15 @@ class IssueTest extends \PHPUnit_Framework_TestCase
         $issue->setTags(['tag']);
         $this->assertEquals(['tag'], $issue->getTags());
     }
+
+    public function testWithoutConstructor()
+    {
+
+        $ref = new \ReflectionClass('OroCRM\Bundle\IssueBundle\Entity\Issue');
+        $issue = $ref->newInstanceWithoutConstructor();
+
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $issue->getCollaborators());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $issue->getRelatedIssues());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $issue->getChildren());
+    }
 }

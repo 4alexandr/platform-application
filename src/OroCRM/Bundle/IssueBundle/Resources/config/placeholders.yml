@@ -8,6 +8,15 @@ items:
     orocrm_issue_children:
         template: OroCRMIssueBundle:Issue:children.html.twig
         applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %orocrm_issue.entity.class%)
+
     orocrm_user_issues:
         template: OroCRMIssueBundle:Issue:userIssues.html.twig
+        applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)
+
+    orocrm_assign_issue_button:
+        template: OroCRMIssueBundle:Issue:assignIssueButton.html.twig
+        applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)
+
+    orocrm_assign_issue_link:
+        template: OroCRMIssueBundle:Issue:assignIssueLink.html.twig
         applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %oro_user.entity.class%)

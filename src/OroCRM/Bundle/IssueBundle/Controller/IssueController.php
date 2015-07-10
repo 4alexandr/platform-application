@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use OroCRM\Bundle\IssueBundle\Entity\Issue;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @Route("/issue")
@@ -45,26 +46,14 @@ class IssueController extends Controller
     {
         $issue = new Issue();
 
-        $defaultPriority = $this->getRepository('OroCRMIssueBundle:Priority')->find('major');
-        if ($defaultPriority) {
-            $issue->setPriority($defaultPriority);
-        }
-
-        $defaultType = $this->getRepository('OroCRMIssueBundle:Type')->find('bug');
-        if ($defaultType) {
-            $issue->setType($defaultType);
-        }
-
-        $formAction = $this->get('router')->generate('orocrm_issue_create');
-
-        return $this->update($issue, $formAction);
+        return $this->update($issue);
     }
 
     /**
-     * @Route("/update/{id}/children", name="orocrm_issue_create_children", requirements={"id"="\d+"})
+     * @Route("/create/subtask/{id}", name="orocrm_issue_create_children", requirements={"id"="\d+"})
      * @Template("OroCRMIssueBundle:Issue:update.html.twig")
      */
-    public function createChildrenAction(Issue $parentIssue)
+    public function createSubtaskAction(Issue $parentIssue)
     {
         if (!$parentIssue->isSupportChildren()) {
             throw $this->createNotFoundException();
@@ -73,19 +62,19 @@ class IssueController extends Controller
         $issue = new Issue();
         $issue->setParent($parentIssue);
 
-        $defaultPriority = $this->getRepository('OroCRMIssueBundle:Priority')->find('major');
-        if ($defaultPriority) {
-            $issue->setPriority($defaultPriority);
-        }
+        return $this->update($issue);
+    }
 
-        $defaultType = $this->getRepository('OroCRMIssueBundle:Type')->find('bug');
-        if ($defaultType) {
-            $issue->setType($defaultType);
-        }
+    /**
+     * @Route("/create/assign/{id}", name="orocrm_issue_create_assign", requirements={"id"="\d+"})
+     * @Template("OroCRMIssueBundle:Issue:update.html.twig")
+     */
+    public function createAssignAction(User $owner)
+    {
+        $issue = new Issue();
+        $issue->setOwner($owner);
 
-        $formAction = $this->get('router')->generate('orocrm_issue_create_children', ['id' => $parentIssue->getId()]);
-
-        return $this->update($issue, $formAction);
+        return $this->update($issue);
     }
 
     /**
@@ -94,19 +83,20 @@ class IssueController extends Controller
      */
     public function updateAction(Issue $issue)
     {
-        $formAction = $this->get('router')->generate('orocrm_issue_update', ['id' => $issue->getId()]);
-
-        return $this->update($issue, $formAction);
+        return $this->update($issue);
     }
 
     /**
      * @param Issue  $issue
      * @param string $formAction
      */
-    protected function update(Issue $issue, $formAction)
+    protected function update(Issue $issue)
     {
-        $saved = false;
-        if ($this->get('orocrm_issue.form.handler.issue')->process($issue)) {
+        $formAction = $this->get('router')->generate($this->getRequest()->get('_route'), $this->getRequest()->get('_route_params'));
+
+        $saved = $this->get('orocrm_issue.form.handler.issue')->process($issue);
+
+        if ($saved && !$this->getRequest()->get('_widgetContainer')) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('orocrm.issue.saved_message')
@@ -130,15 +120,5 @@ class IssueController extends Controller
             'form' => $this->get('orocrm_issue.form.handler.issue')->getForm()->createView(),
             'formAction' => $formAction,
         ];
-    }
-
-    /**
-     * @param string $entityName
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($entityName)
-    {
-        return $this->getDoctrine()->getRepository($entityName);
     }
 }
