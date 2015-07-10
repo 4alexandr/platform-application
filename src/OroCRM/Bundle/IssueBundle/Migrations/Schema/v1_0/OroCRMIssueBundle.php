@@ -7,13 +7,21 @@ use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 
-class OroCRMIssueBundle implements Migration, NoteExtensionAwareInterface
+class OroCRMIssueBundle implements
+    Migration,
+    NoteExtensionAwareInterface,
+    ActivityExtensionAwareInterface
 {
     /**
      * @var NoteExtension
      */
     protected $noteExtension;
+
+    /** @var ActivityExtension */
+    protected $activityExtension;
 
     /**
      * {@inheritdoc}
@@ -21,6 +29,14 @@ class OroCRMIssueBundle implements Migration, NoteExtensionAwareInterface
     public function setNoteExtension(NoteExtension $noteExtension)
     {
         $this->noteExtension = $noteExtension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 
     /**
@@ -42,6 +58,7 @@ class OroCRMIssueBundle implements Migration, NoteExtensionAwareInterface
         $this->addOrocrmIssueToRelatedIssueForeignKeys($schema);
 
         $this->noteExtension->addNoteAssociation($schema, 'orocrm_issue');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'orocrm_issue');
     }
 
     /**
