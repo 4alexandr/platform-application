@@ -43,8 +43,6 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
     {
         $userRepo = $this->templateManager
             ->getEntityRepository('Oro\Bundle\UserBundle\Entity\User');
-        $issueRepo = $this->templateManager
-            ->getEntityRepository('OroCRM\Bundle\IssueBundle\Entity\Issue');
 
         $priority = new Priority();
         $priority->setName('major');
@@ -71,8 +69,7 @@ class IssueFixture extends AbstractTemplateRepository implements TemplateFixture
                     ->setPriority($priority)
                     ->setResolution($resolution)
                     ->setType($type)
-                    ->setParent($parent)
-                    ;
+                    ->setParent($parent);
 
                 return;
         }

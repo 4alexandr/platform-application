@@ -72,9 +72,9 @@ class LoadIssueData implements FixtureInterface
         }
 
         $issues = [];
-        $issues_by_type = [];
+        $issuesByType = [];
 
-        for ($i = 0, $i_max = count($types); $i < $i_max; ++$i) {
+        for ($i = 0, $iMax = count($types); $i < $iMax; ++$i) {
             $type = $types[$i];
 
             for ($j = 0; $j < self::FIXTURES_COUNT; ++$j) {
@@ -95,7 +95,7 @@ class LoadIssueData implements FixtureInterface
 
                 $issue->setType($type);
                 if ($type->getParent()) {
-                    $parent = $this->getRandomEntity($issues_by_type[$type->getParent()->getName()]);
+                    $parent = $this->getRandomEntity($issuesByType[$type->getParent()->getName()]);
                     $issue->setParent($parent);
                 }
 
@@ -105,7 +105,7 @@ class LoadIssueData implements FixtureInterface
 
                 $manager->persist($issue);
                 $issues[] = $issue;
-                $issues_by_type[$issue->getType()->getName()][] = $issue;
+                $issuesByType[$issue->getType()->getName()][] = $issue;
             }
         }
     }
@@ -118,7 +118,7 @@ class LoadIssueData implements FixtureInterface
     protected function getRandomEntity($entities)
     {
         if (empty($entities)) {
-            return;
+            return null;
         }
 
         return $entities[rand(0, count($entities) - 1)];

@@ -20,7 +20,9 @@ class OroCRMIssueBundle implements
      */
     protected $noteExtension;
 
-    /** @var ActivityExtension */
+    /**
+     * @var ActivityExtension
+     */
     protected $activityExtension;
 
     /**
@@ -94,7 +96,7 @@ class OroCRMIssueBundle implements
         $table->addIndex(['resolution_name'], 'IDX_EF1CE9718EEEA2E1', []);
         $table->addIndex(['type_name'], 'IDX_EF1CE971892CBB0E', []);
         $table->addIndex(['parent_id'], 'IDX_EF1CE971727ACA70', []);
-        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_EF1CE9711023C4EE', []);
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_EF1CE9711023C4EE');
         $table->addIndex(['workflow_step_id'], 'IDX_EF1CE97171FE882C', []);
     }
 
