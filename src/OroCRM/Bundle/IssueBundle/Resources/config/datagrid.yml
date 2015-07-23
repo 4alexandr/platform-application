@@ -1,5 +1,6 @@
 datagrid:
     issues-grid:
+        extended_entity_name: %orocrm_issue.entity.class%
         options:
             entity_pagination: true
 

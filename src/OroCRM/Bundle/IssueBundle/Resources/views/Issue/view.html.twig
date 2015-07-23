@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroTagBundle::macros.html.twig' as tag %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%entity.summary%": entity.summary|default('N/A') }}) %}
 
@@ -98,6 +99,9 @@
                 {%- endfor -%}
                 {%- endset -%}
                 {{ UI.renderHtmlProperty('orocrm.issue.related_issues.label'|trans, relatedIssuesData|raw) }}
+            </div>
+            <div class="responsive-block">
+                {{ entityConfig.renderDynamicFields(entity) }}
             </div>
         </div>
     {%- endset -%}
