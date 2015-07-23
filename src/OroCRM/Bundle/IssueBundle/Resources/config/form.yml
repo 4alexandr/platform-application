@@ -1,5 +1,6 @@
 parameters:
     orocrm_issue.form.type.issue.class:             OroCRM\Bundle\IssueBundle\Form\Type\IssueType
+    orocrm_issue.form.type.issue_select.class:      OroCRM\Bundle\IssueBundle\Form\Type\IssueSelectType
     orocrm_issue.form.type.issue_api.class:         OroCRM\Bundle\IssueBundle\Form\Type\IssueApiType
     orocrm_issue.form.handler.issue.class:          OroCRM\Bundle\IssueBundle\Form\Handler\IssueHandler
     orocrm_issue.form.handler.issue_api.class:      OroCRM\Bundle\IssueBundle\Form\Handler\IssueApiHandler
@@ -76,3 +77,8 @@ services:
         arguments:
             - %orocrm_issue.entity.class%
             - @doctrine.orm.entity_manager
+
+    orocrm_issue.form.type.issue_select:
+        class: %orocrm_issue.form.type.issue_select.class%
+        tags:
+            - { name: form.type, alias: orocrm_issue_select }

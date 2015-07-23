@@ -165,6 +165,7 @@ datagrid:
                 - user
 
     issues-dashboard-grid:
+        extended_entity_name: %orocrm_issue.entity.class%
         options:
             toolbarOptions:
                 hide: true
@@ -218,3 +219,63 @@ datagrid:
                 icon:          eye-open
                 link:          view_link
                 rowAction:     true
+
+    issues-select-grid:
+        extended_entity_name: %orocrm_issue.entity.class%
+        properties:
+            id: ~
+        source:
+            type: orm
+            query:
+                select:
+                    - issue
+                    - workflowStep.label as workflowStepLabel
+                from:
+                    - { table: %orocrm_issue.entity.class%, alias: issue }
+                join:
+                    left:
+                        - { join: issue.workflowStep, alias: workflowStep }
+        columns:
+            code:
+                label: orocrm.issue.code.label
+            summary:
+                label: orocrm.issue.summary.label
+            type:
+                label: orocrm.issue.type.label
+            priority:
+                label: orocrm.issue.priority.label
+            workflowStepLabel:
+                label: orocrm.issue.workflow_step.label
+        sorters:
+            columns:
+                code:
+                    data_name: issue.code
+                summary:
+                    data_name: issue.summary
+                type:
+                    data_name: issue.type
+                priority:
+                    data_name: priority.order
+                workflowStepLabel:
+                    data_name: workflowStep.stepOrder
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: issue.code
+                summary:
+                    type:      string
+                    data_name: issue.summary
+                type:
+                    type:      string
+                    data_name: issue.type
+                priority:
+                    type:      string
+                    data_name: issue.priority
+                workflowStepLabel:
+                    type:      entity
+                    data_name: issue.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: %orocrm_issue.entity.class%

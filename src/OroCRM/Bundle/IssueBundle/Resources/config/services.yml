@@ -2,10 +2,18 @@ parameters:
     orocrm_issue.entity.class:                       OroCRM\Bundle\IssueBundle\Entity\Issue
 
 services:
-   orocrm_issue.widget_provider.actions.assign_issue:
+    orocrm_issue.widget_provider.actions.assign_issue:
         parent: oro_ui.widget_provider.action_button.abstract
         arguments:
             - orocrm_assign_issue_button
             - orocrm_assign_issue_link
         tags:
             - { name: oro_ui.view_action_provider, group: activity }
+
+    orocrm_issue.autocomplete.issue.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %orocrm_issue.entity.class%
+            - ["code", "summary"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: issues }

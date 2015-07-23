@@ -82,10 +82,9 @@ class IssueType extends AbstractType
             [
                 'handle_primary' => false,
                 'label' => 'orocrm.issue.related_issues.label',
-                'type' => 'entity',
+                'type' => 'orocrm_issue_select',
                 'options' => [
-                    'class' => 'OroCRM\Bundle\IssueBundle\Entity\Issue',
-                    'empty_value' => '',
+                    'label' => 'orocrm.issue.related_issues.label',
                 ],
                 'required' => false,
             ]

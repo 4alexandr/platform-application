@@ -58,3 +58,5 @@ orocrm:
         assign_entity: Assign issue
         assign_entity.title: Assign a issue to this user
         assign_entity.widget_title: Assign issue to %username%
+
+        form.choose_issue:          Choose a issue...
