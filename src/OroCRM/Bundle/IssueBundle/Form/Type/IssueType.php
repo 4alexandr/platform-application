@@ -46,20 +46,10 @@ class IssueType extends AbstractType
 
         $builder->add(
             'reporter',
-            'oro_user_acl_select',
+            'oro_user_select',
             [
                 'label' => 'orocrm.issue.reporter.label',
                 'required' => false,
-                'autocomplete_alias' => 'acl_users',
-                'configs' => [
-                    'placeholder' => 'oro.user.form.choose_user',
-                    'result_template_twig' => 'OroUserBundle:User:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'OroUserBundle:User:Autocomplete/selection.html.twig',
-                    'extra_config' => 'acl_user_autocomplete',
-                    'entity_name' => 'Oro\Bundle\UserBundle\Entity\User',
-                    'permission' => 'ASSIGN',
-                    'entity_id' => 0,
-                ],
             ]
         );
 

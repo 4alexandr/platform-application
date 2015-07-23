@@ -43,25 +43,25 @@ OroCRM\Bundle\IssueBundle\Entity\Issue:
             relation_type: many-to-one
             relation_fields:
                 -
-                    name:                   first_name
+                    name:                   firstName
                     target_type:            text
-                    target_fields:          [owner_first_name]
+                    target_fields:          [ownerFirstName]
                 -
-                    name:                   last_name
+                    name:                   lastName
                     target_type:            text
-                    target_fields:          [owner_last_name]
+                    target_fields:          [ownerLastName]
         -
             name: reporter
             relation_type: many-to-one
             relation_fields:
                 -
-                    name:                   first_name
+                    name:                   firstName
                     target_type:            text
-                    target_fields:          [reporter_first_name]
+                    target_fields:          [reporterFirstName]
                 -
-                    name:                   last_name
+                    name:                   lastName
                     target_type:            text
-                    target_fields:          [reporter_last_name]
+                    target_fields:          [reporterLastName]
         -
             name: workflowStep
             relation_type: many-to-one
