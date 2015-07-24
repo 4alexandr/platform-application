@@ -3,6 +3,7 @@
 namespace OroCRM\Bundle\IssueBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * IssueRepository.
@@ -15,20 +16,26 @@ class IssueRepository extends EntityRepository
     /**
      * Get issues by status.
      *
-     * @return array
+     * @return QueryBuilder
      */
     public function getCountByStatus()
     {
         $qb = $this->getEntityManager()
             ->getRepository('OroWorkflowBundle:WorkflowStep')
             ->createQueryBuilder('workflow')
-            ->select('workflow.label as label, workflow.name, COUNT(issue) as issue_count')
-            ->leftJoin('OroCRMIssueBundle:Issue', 'issue', 'WITH', 'issue.workflowStep = workflow')
+            ->select(
+                'workflow.label as label',
+                'workflow.name, COUNT(issue) as issue_count'
+            )
+            ->leftJoin(
+                'OroCRMIssueBundle:Issue',
+                'issue',
+                'WITH',
+                'issue.workflowStep = workflow'
+            )
             ->groupBy('workflow.name')
             ->orderBy('workflow.label', 'ASC');
 
-        $data = $qb->getQuery()->getArrayResult();
-
-        return $data;
+        return $qb;
     }
 }

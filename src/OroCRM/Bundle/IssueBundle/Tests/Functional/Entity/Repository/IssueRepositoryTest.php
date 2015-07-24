@@ -19,13 +19,17 @@ class IssueRepositoryTest extends WebTestCase
     protected function setUp()
     {
         $this->initClient();
-        $this->loadFixtures(['OroCRM\Bundle\IssueBundle\Tests\Functional\DataFixtures\LoadIssueData']);
-        $this->repository = $this->getContainer()->get('doctrine')->getRepository('OroCRMIssueBundle:Issue');
+        $this->loadFixtures(
+            ['OroCRM\Bundle\IssueBundle\Tests\Functional\DataFixtures\LoadIssueData']
+        );
+        $this->repository = $this->getContainer()->get('doctrine')
+            ->getRepository('OroCRMIssueBundle:Issue');
     }
 
     public function testGetCountByStatus()
     {
-        $data = $this->repository->getCountByStatus();
+        $data = $this->repository
+            ->getCountByStatus()->getQuery()->getArrayResult();
 
         $this->assertEquals(4, count($data));
 

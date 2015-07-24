@@ -353,6 +353,20 @@ class Issue extends ExtendIssue implements EmptyItem, Taggable
     }
 
     /**
+     * Set id.
+     *
+     * @param string $id
+     *
+     * @return Issue
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id.
      *
      * @return int

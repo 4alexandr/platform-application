@@ -8,10 +8,12 @@
          bootstrap="bootstrap.php.cache"
 >
     <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            <directory>../src/*Bundle/Tests</directory>
+        <testsuite name="Unit Tests">
+            <directory>../src/OroCRM/*/*/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Functional Tests">
+            <file>../src/Oro/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional/ConfigTranslationTest.php</file>
+            <directory>../src/OroCRM/*/*/Tests/Functional</directory>
         </testsuite>
     </testsuites>
 

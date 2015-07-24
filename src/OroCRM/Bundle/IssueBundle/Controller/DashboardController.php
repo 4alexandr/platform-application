@@ -22,7 +22,7 @@ class DashboardController extends Controller
     public function byStatusAction($widget)
     {
         $items = $this->getDoctrine()->getRepository('OroCRMIssueBundle:Issue')
-            ->getCountByStatus();
+            ->getCountByStatus()->getQuery()->getArrayResult();
 
         $widgetAttr = $this->get('oro_dashboard.widget_configs')->getWidgetAttributesForTwig($widget);
         $widgetAttr['chartView'] = $this->get('oro_chart.view_builder')

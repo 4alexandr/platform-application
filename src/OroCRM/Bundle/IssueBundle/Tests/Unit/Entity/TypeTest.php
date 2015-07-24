@@ -54,4 +54,12 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $type->removeChild($child1);
         $this->assertEquals(1, $type->getChildren()->count());
     }
+
+    public function testToString()
+    {
+        $type = new Type();
+        $type->setLabel('Story');
+
+        $this->assertEquals('Story', (string)$type);
+    }
 }

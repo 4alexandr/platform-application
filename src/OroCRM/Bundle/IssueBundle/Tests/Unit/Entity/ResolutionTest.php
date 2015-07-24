@@ -29,4 +29,12 @@ class ResolutionTest extends \PHPUnit_Framework_TestCase
             ['label', 'Done'],
         ];
     }
+
+    public function testToString()
+    {
+        $resolution = new Resolution();
+        $resolution->setLabel('Done');
+
+        $this->assertEquals('Done', (string)$resolution);
+    }
 }

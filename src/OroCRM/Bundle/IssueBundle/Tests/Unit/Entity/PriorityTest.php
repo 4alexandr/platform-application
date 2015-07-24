@@ -30,4 +30,12 @@ class PriorityTest extends \PHPUnit_Framework_TestCase
             ['order', 1],
         ];
     }
+
+    public function testToString()
+    {
+        $priority = new Priority();
+        $priority->setLabel('Major');
+
+        $this->assertEquals('Major', (string)$priority);
+    }
 }
