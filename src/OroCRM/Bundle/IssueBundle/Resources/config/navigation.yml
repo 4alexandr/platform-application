@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         issue_tab:
-            label: orocrm.issue.entity_label
+            label: orocrm.issue.entity_plural_label
             route: orocrm_issue_index
             extras:
                 routes: ['orocrm_issue_update', 'orocrm_issue_create', 'orocrm_issue_create_children', 'orocrm_issue_view']
