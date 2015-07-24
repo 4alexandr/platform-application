@@ -129,11 +129,7 @@ class IssueType extends AbstractType
         $form = $event->getForm();
         $entity = $event->getData();
 
-        if ($entity === null) {
-            return;
-        }
-
-        if ($entity->getId()) {
+        if ($entity === null || $entity->getId()) {
             return;
         }
 
