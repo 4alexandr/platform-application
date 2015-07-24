@@ -3,6 +3,9 @@
 namespace OroCRM\Bundle\IssueBundle\Entity;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\SoapBundle\Entity\SoapEntityInterface;
 
 /**
@@ -20,6 +23,11 @@ class IssueSoap extends Issue implements SoapEntityInterface
             $this->$property = $value;
         }
 
+        $this->owner = $this->getEntityId($this->owner);
+        $this->reporter = $this->getEntityId($this->reporter);
+        $this->workflowItem = $this->getEntityId($this->workflowItem);
+        $this->workflowStep = $this->getEntityId($this->workflowStep);
+
         $this->type = $this->getEntityName($this->type);
         $this->priority = $this->getEntityName($this->priority);
         $this->resolution = $this->getEntityName($this->resolution);
@@ -30,7 +38,7 @@ class IssueSoap extends Issue implements SoapEntityInterface
     }
 
     /**
-     * @param Collection $entities
+     * @param ArrayCollection $entities
      *
      * @return int[]
      */
@@ -52,6 +60,20 @@ class IssueSoap extends Issue implements SoapEntityInterface
             return $entity->getName();
         }
 
-        return;
+        return null;
+    }
+
+    /**
+     * @param object $entity
+     *
+     * @return int|null
+     */
+    protected function getEntityId($entity)
+    {
+        if ($entity) {
+            return $entity->getId();
+        }
+
+        return null;
     }
 }

@@ -47,7 +47,7 @@ class IssueSoapTest extends \PHPUnit_Framework_TestCase
         $issueSoap->soapInit($issue);
 
         $this->assertEquals($issueSoap->getCode(), $issue->getCode());
-        $this->assertEquals($issueSoap->getOwner(), $issue->getOwner());
+        $this->assertEquals($issueSoap->getOwner(), $issue->getOwner()->getId());
         $this->assertEquals($issueSoap->getType(), $issue->getType()->getName());
         $this->assertEquals($issueSoap->getRelatedIssues(), [$relatedIssue->getId()]);
     }
